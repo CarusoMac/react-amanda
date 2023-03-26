@@ -27,7 +27,7 @@
   --primary-font: 'Poppins', sans-serif;
   --primary-text: #250e27;
   --text-gray: #250e27;
-  --text-white: #eb3b3b;
+  --text-blue: #241868;
 }
 
 .main-container {
@@ -64,7 +64,7 @@ h3 {
   margin: 19px;
   font-weight: 600;
   font-size: 20px;
-  color: var(--text-white);
+  color: var(--text-blue);
 }
 
 
