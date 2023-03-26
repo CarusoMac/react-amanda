@@ -1,25 +1,33 @@
+//dependecies
 import React from 'react';
-import logo from './logo.svg';
+
+//styles
+import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
+
+//components
+import MapComponent from './components/mapAmanda';
+import SettingControls from './components/settingControls';
+import DataListContainer from './components/dataListContainer';
+
+
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div className='main-container container'>
+        <SettingControls />
+        {/* <UploadFile /> */}
+        <div className='row'>
+          <MapComponent />
+          <DataListContainer />
+        </div>
+
+        {/* according to first and last coordinates, set zoom and center the map */}
+
+      </div>
+    </>
   );
 }
 
