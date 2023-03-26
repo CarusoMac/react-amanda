@@ -45,6 +45,16 @@ export default function SettingControls(props: SettingControlsProps) {
     setIsPlaying(false);
   }
 
+  const handleBackwardButtonClick = () => {
+    let tempTime = props.currentTime
+    props.onRangeSet(tempTime - 30000);
+  };
+
+  const handleForwardButtonClick = () => {
+    let tempTime = props.currentTime
+    props.onRangeSet(tempTime + 30000);
+  };
+
   useEffect(() => {
     const intervalId = setInterval(() => {
       if (props.currentTime < props.lastTimeStamp + 30000 && isPlaying) {
@@ -72,10 +82,10 @@ export default function SettingControls(props: SettingControlsProps) {
 
             <div className="slider-controls-container">
               <div className="slider-controls">
-                <button className="backward-button">&lt; &lt;</button>
+                <button className="backward-button" onClick={handleBackwardButtonClick}>&lt; &lt;</button>
                 <button className="play-button" onClick={handlePlayButtonClick}>&#9654;</button>
                 <button className="pause-button" onClick={handlePauseButtonClick}>&#x7C;&#x7C;</button>
-                <button className="forward-button">&gt; &gt;</button>
+                <button className="forward-button" onClick={handleForwardButtonClick}>&gt; &gt;</button>
               </div>
             </div>
 
