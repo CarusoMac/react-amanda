@@ -8,6 +8,8 @@ import '../App.css'
 interface SettingControlsProps {
   onRangeSet: (newTime: number) => void;
   currentTime: number;
+  firstTimeStamp: number;
+  lastTimeStamp: number;
 }
 
 function formatTimeStamp(timestamp: number) {
@@ -25,12 +27,7 @@ function formatTimeStamp(timestamp: number) {
 
 export default function SettingControls(props: SettingControlsProps) {
 
-  let timeStamps: number[] = [];
-  log1.map(timeStamp => {
-    timeStamps.push(timeStamp.timestamp);
-  });
-  let firstTimeStamp = timeStamps[0];
-  let lastTimeStamp = timeStamps[timeStamps.length - 1];
+
 
   const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newTime = e.target.valueAsNumber;
@@ -50,7 +47,7 @@ export default function SettingControls(props: SettingControlsProps) {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      if (props.currentTime < lastTimeStamp + 30000 && isPlaying) {
+      if (props.currentTime < props.lastTimeStamp + 30000 && isPlaying) {
         let temptime = props.currentTime;
         props.onRangeSet(temptime + 30000);
       }
@@ -70,7 +67,7 @@ export default function SettingControls(props: SettingControlsProps) {
             <h3>Nastaveni casu</h3>
 
             <div className="range-slider-container">
-              <input className='range-slider' type='range' min={firstTimeStamp} max={lastTimeStamp} step='30000' value={props.currentTime} onChange={handleTimeChange} />
+              <input className='range-slider' type='range' min={props.firstTimeStamp} max={props.lastTimeStamp} step='30000' value={props.currentTime} onChange={handleTimeChange} />
             </div>
 
             <div className="slider-controls-container">
