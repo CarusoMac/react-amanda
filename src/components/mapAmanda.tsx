@@ -1,5 +1,6 @@
 //dependecies
 import { MapContainer, TileLayer, Marker, Popup, Polyline, LayerGroup, FeatureGroup, Rectangle, Circle } from 'react-leaflet'
+import { useRef, useEffect, useState } from 'react';
 
 //styles
 import 'bootstrap/dist/css/bootstrap.css';
@@ -7,7 +8,16 @@ import '../App.css';
 //data
 import log1 from '../data/log1.json'
 
-export default function MapComponent() {
+interface MapComponentProps {
+  currentTime: number;
+}
+
+export default function MapComponent(props: MapComponentProps) {
+
+  const [currentLocation, setCurrentLocation] = useState([log1[log1.length - 1].lat, log1[log1.length - 1].lon]);
+  // const [activeTower, setActiveTower] = useState(ostravaData[ostravaData.length - 1].cellid);
+  const [pathInTime, setPathInTime] = useState<Array<[number, number]>>([]);
+
 
   const mapcenter = () => {
     let pathCoordinates: [number, number][] = [];
@@ -20,21 +30,37 @@ export default function MapComponent() {
     )
   }
 
+  // useEffect(() => {
+  //   let tempPathInTime: [number, number][] = [];
+  //   log1.forEach(location => {
+  //     if ((location.timestamp) <= props.currentTime) {
+  //       tempPathInTime.push([location.lat, location.lon]);
+  //       //setActiveTower(location.towerId);
+  //     }
+  //   });
+  //   setPathInTime(tempPathInTime);
+  //   setCurrentLocation(tempPathInTime[tempPathInTime.length - 1]);
+  // }, [props.currentTime]);
+
+  useEffect(() => {
+    let tempPathInTime: [number, number][] = [];
+    tempPathInTime = log1
+      .filter(location => location.timestamp <= props.currentTime)
+      .map(location => [location.lat, location.lon]);
+    setPathInTime(tempPathInTime);
+    setCurrentLocation(tempPathInTime[tempPathInTime.length - 1]);
+  }, [props.currentTime]);
+
   return (
     <>
       <div className='col-9'>
-        <MapContainer center={mapcenter()} zoom={16} scrollWheelZoom={true} >
+        <MapContainer center={mapcenter()} zoom={15} scrollWheelZoom={true} >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          {/* <FeatureGroup pathOptions={purpleOptions}>
-          {grid(mapCenter)}
-        </FeatureGroup> */}
-          {/* {uniqueTowers.map((tower, index) =>
-          <Markers key={index} cellid={tower.cellid} lat={tower.lat} lon={tower.lon} />
-        )} */}
-          {/* <Polyline positions={pathInTime} color="red" /> */}
+
+          <Polyline positions={pathInTime} color="red" />
         </MapContainer>
       </div>
     </>

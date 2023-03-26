@@ -1,5 +1,6 @@
 //dependecies
 import React from 'react';
+import { useState } from 'react';
 
 //styles
 import 'bootstrap/dist/css/bootstrap.css';
@@ -14,13 +15,14 @@ import DataListContainer from './components/dataListContainer';
 
 
 function App() {
+  const [currentTime, setCurrentTime] = useState(0); //in ms
   return (
     <>
       <div className='main-container container'>
-        <SettingControls />
+        <SettingControls onRangeSet={setCurrentTime} currentTime={currentTime} />
         {/* <UploadFile /> */}
         <div className='row'>
-          <MapComponent />
+          <MapComponent currentTime={currentTime} />
           <DataListContainer />
         </div>
 
