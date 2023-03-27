@@ -1,6 +1,6 @@
 //dependecies
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import log1 from './data/log1.json' // fetch from .NET here
 //styles
 import 'bootstrap/dist/css/bootstrap.css';
@@ -22,17 +22,23 @@ let lastTimeStamp = timeStamps[timeStamps.length - 1];
 
 function App() {
   const [currentTime, setCurrentTime] = useState(firstTimeStamp); //in ms
+  const [markerLocation, setMarkerLocation] = useState<[number, number]>([0, 0]);
+
+  useEffect(() => {
+    console.log(markerLocation);
+    //setDistance
+  }, [markerLocation]);
 
   return (
     <>
 
       <div className='main-container container'>
-        <SettingControls onRangeSet={setCurrentTime} currentTime={currentTime} firstTimeStamp={firstTimeStamp} lastTimeStamp={lastTimeStamp} />
+        <SettingControls onRangeSet={setCurrentTime} currentTime={currentTime} firstTimeStamp={firstTimeStamp} lastTimeStamp={lastTimeStamp} markerLocation={markerLocation} />
         {/* <UploadFile /> */}
         <hr />
         <div className='row'>
-          <MapComponent currentTime={currentTime} />
-          <DataListContainer currentTime={currentTime} />
+          <MapComponent currentTime={currentTime} onMarkerChange={setMarkerLocation} />
+          <DataListContainer currentTime={currentTime} markerLocation={markerLocation} />
         </div>
 
         {/* according to first and last coordinates, set zoom and center the map */}

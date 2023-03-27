@@ -9,6 +9,7 @@ const numberOfActiveLogs = 3; //fetch z db
 
 interface DataListContainerProps {
   currentTime: number;
+  markerLocation: [number, number]
 }
 
 
@@ -29,7 +30,7 @@ export default function DataListContainer(props: DataListContainerProps) {
   return (
     <div className='col-3 datalist-container'>
       {/* {logsIDarr.map((logID) => <LogInfo logID={logID} onDeleteLog={setLogsIDarr} />)} */}
-      {logsIDarr.map((logID) => <LogInfo key={logID} logID={logID} onLogDelete={setLogDeleteId} currentTime={props.currentTime} />)}
+      {logsIDarr.map((logID) => <LogInfo key={logID} logID={logID} onLogDelete={setLogDeleteId} currentTime={props.currentTime} markerLocation={props.markerLocation} />)}
     </div>
   );
 }

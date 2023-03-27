@@ -7,11 +7,14 @@ import 'bootstrap/dist/css/bootstrap.css';
 import '../App.css';
 //data
 import log1 from '../data/log1.json'
-import { Draggable } from 'leaflet';
 
+//components
+import DragZnacka from './dragZnacka';
+import { marker } from 'leaflet';
 
 interface MapComponentProps {
   currentTime: number;
+  onMarkerChange: (position: [number, number]) => void;
 }
 
 export default function MapComponent(props: MapComponentProps) {
@@ -31,7 +34,8 @@ export default function MapComponent(props: MapComponentProps) {
       [0, 0]
     )
   }
-
+  const center = mapcenter();
+  const [markerLocation, setMarkerLocation] = useState(mapcenter())
   useEffect(() => {
     let tempPathInTime: [number, number][] = [];
     log1.forEach(location => {
@@ -42,27 +46,29 @@ export default function MapComponent(props: MapComponentProps) {
     });
     setPathInTime(tempPathInTime);
     setCurrentLocation(tempPathInTime[tempPathInTime.length - 1]);
+    //setDistance
   }, [props.currentTime]);
 
-  // useEffect(() => {
-  //   let tempPathInTime: [number, number][] = [];
-  //   tempPathInTime = log1
-  //     .filter(location => location.timestamp <= props.currentTime)
-  //     .map(location => [location.lat, location.lon]);
+  useEffect(() => {
+    props.onMarkerChange(markerLocation);
+    console.log(markerLocation);
+    //setDistance
+  }, [markerLocation]);
 
-  //   setPathInTime(tempPathInTime);
-  //   setCurrentLocation(tempPathInTime[tempPathInTime.length - 1]);
-  // }, [props.currentTime]);
+
+
 
   return (
     <>
       <div className='col-9'>
+        {/* <MapContainer center={mapcenter()} zoom={15} scrollWheelZoom={true} > */}
         <MapContainer center={mapcenter()} zoom={15} scrollWheelZoom={true} >
+
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          {/* <DraggableMarker positions={mapcenter()} /> */}
+          <DragZnacka positions={center} onPositionChange={setMarkerLocation} />
           <Polyline positions={pathInTime} color="red" />
         </MapContainer>
       </div>

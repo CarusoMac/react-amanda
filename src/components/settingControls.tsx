@@ -11,7 +11,10 @@ interface SettingControlsProps {
   currentTime: number;
   firstTimeStamp: number;
   lastTimeStamp: number;
+  markerLocation: [number, number]
 }
+
+
 
 function formatTimeStamp(timestamp: number) {
   let date = new Date(timestamp);
@@ -97,7 +100,7 @@ export default function SettingControls(props: SettingControlsProps) {
         </div>
         <div className="set-control-card col-4">
 
-          <Znacka />
+          <Znacka markerLocation={props.markerLocation} />
 
         </div>
         <div className="set-control-card col-4">Upload</div>
