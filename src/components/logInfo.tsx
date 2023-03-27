@@ -1,17 +1,36 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
+import data from '../data/log1.json'
 
 interface LogInfoProps {
   logID: string;
   onLogDelete: (logId: string) => void;
+  currentTime: number;
 }
+
 
 // fetch z DB na log s logID /. json export / lat, lon, measured_at
 
 export default function LogInfo(props: LogInfoProps) {
   const [isVisible, setIsVisible] = useState(false);
-  const [deleteLogId, setDelteLogId] = useState('');
-
+  const [currentLat, setCurrentLat] = useState(0);
+  const [currentLon, setCurrentLon] = useState(0);
+  const [currentCell, setCurrentCell] = useState(0);
   const targetDivRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Find the data point with the closest timestamp to the current time
+    const closestDataPoint = data.reduce((closest, current) => {
+      const closestTimeDiff = Math.abs(closest.timestamp - props.currentTime);
+      const currentTimeDiff = Math.abs(current.timestamp - props.currentTime);
+      return currentTimeDiff < closestTimeDiff ? current : closest;
+    });
+
+    // Update the lat and lon values to match the closest data point
+    setCurrentLat(closestDataPoint.lat);
+    setCurrentLon(closestDataPoint.lon);
+    setCurrentCell(closestDataPoint.cellid);
+    // ... do something with tempLat and tempLon ...
+  }, [props.currentTime]);
 
   const handleHideButtonClick = () => {
     if (targetDivRef.current) {
@@ -21,9 +40,7 @@ export default function LogInfo(props: LogInfoProps) {
   };
 
   const handleLogDelete = () => {
-    setDelteLogId(props.logID);
     const deletedId = props.onLogDelete(props.logID);
-
   };
 
   return (
@@ -31,10 +48,9 @@ export default function LogInfo(props: LogInfoProps) {
 
       <h3>{props.logID}</h3>
       <p>
-        lat:<br />
-        lng:
+        lat: {currentLat}<br />
+        lng: {currentLon}
       </p>
-
       <button onClick={handleHideButtonClick}>
         {isVisible ? (
           <span dangerouslySetInnerHTML={{ __html: '&#9679;&#9679;&#9679;' }} />
@@ -54,7 +70,9 @@ export default function LogInfo(props: LogInfoProps) {
       </div>
 
       <div ref={targetDivRef} style={{ display: 'none' }}>
+
         <hr />
+        cellID: {currentCell}<br />
         vzdalenost od znacky
         <p>
           akt

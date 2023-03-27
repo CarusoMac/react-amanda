@@ -32,7 +32,7 @@ function App() {
         <hr />
         <div className='row'>
           <MapComponent currentTime={currentTime} />
-          <DataListContainer />
+          <DataListContainer currentTime={currentTime} />
         </div>
 
         {/* according to first and last coordinates, set zoom and center the map */}
