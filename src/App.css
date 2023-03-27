@@ -1,6 +1,7 @@
 .leaflet-container {
   height: 100vh;
   margin: 10px;
+  min-width: 800px;
 }
 
 /* 1 General */
@@ -53,10 +54,13 @@ a {
   background: var(--primary-color);
 }
 
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+input[type=number] {
+  border: none;
+  outline: none;
+  background-color: rgb(75, 125, 231, 0.1);
+  margin: 10px;
+  padding: 7px;
+  border-radius: 5px;
 }
 
 
@@ -93,13 +97,13 @@ button {
 
 
 /* ************************* */
-.datalist-container {
 
-  border: 1px solid;
-  border-radius: 8px;
-}
 
 .set-control-container {
+  text-align: center;
+}
+
+.set-marker-container {
   text-align: center;
 }
 
@@ -111,6 +115,52 @@ button {
   overflow: hidden;
   border: none;
   margin: 10px;
+}
+
+.log-info-card {
+  height: fit-content;
+  min-width: 200px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 12px 2px rgb(75, 125, 231, 0.9);
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+  border: none;
+  margin: 10px;
+  font-size: 0.8rem;
+  text-align: center;
+  background-color: rgb(50, 81, 148);
+  color: aliceblue;
+
+}
+
+.log-info-card h3 {
+  color: aliceblue;
+}
+
+
+.log-info-card button {
+  color: gray;
+  border: none;
+  font-size: 1.6rem;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+}
+
+.log-info-controls {
+  /* Set position to absolute */
+  /* position: absolute; */
+  /* Set top and right properties to 0 */
+  top: 0;
+  right: 0;
+  /* Add some margin and padding */
+  margin: 10px;
+  padding: 10px;
+}
+
+.log-info-card button:hover {
+  color: rgb(199, 144, 42)
 }
 
 /* time controler******************************************************************************************* */

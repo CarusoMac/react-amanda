@@ -7,6 +7,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import '../App.css';
 //data
 import log1 from '../data/log1.json'
+import { Draggable } from 'leaflet';
+
 
 interface MapComponentProps {
   currentTime: number;
@@ -60,7 +62,7 @@ export default function MapComponent(props: MapComponentProps) {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-
+          {/* <DraggableMarker positions={mapcenter()} /> */}
           <Polyline positions={pathInTime} color="red" />
         </MapContainer>
       </div>

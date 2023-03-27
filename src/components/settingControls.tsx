@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 //data
 import log1 from '../data/log1.json' // fetch from .NET here
 import '../App.css'
+import Znacka from './znacka';
 
 interface SettingControlsProps {
   onRangeSet: (newTime: number) => void;
@@ -94,7 +95,11 @@ export default function SettingControls(props: SettingControlsProps) {
             </div>
           </div>
         </div>
-        <div className="set-control-card col-4">Znacka</div>
+        <div className="set-control-card col-4">
+
+          <Znacka />
+
+        </div>
         <div className="set-control-card col-4">Upload</div>
       </div>
 
