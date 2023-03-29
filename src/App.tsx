@@ -31,7 +31,7 @@ function App() {
 
   return (
     <>
-
+      <h2> 29/3/2023</h2>
       <div className='main-container container'>
         <SettingControls onRangeSet={setCurrentTime} currentTime={currentTime} firstTimeStamp={firstTimeStamp} lastTimeStamp={lastTimeStamp} markerLocation={markerLocation} />
         {/* <UploadFile /> */}
@@ -39,6 +39,7 @@ function App() {
         <div className='row'>
           <MapComponent currentTime={currentTime} onMarkerChange={setMarkerLocation} />
           <DataListContainer currentTime={currentTime} markerLocation={markerLocation} />
+
         </div>
 
         {/* according to first and last coordinates, set zoom and center the map */}

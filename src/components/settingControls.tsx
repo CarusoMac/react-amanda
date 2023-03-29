@@ -6,6 +6,9 @@ import log1 from '../data/log1.json' // fetch from .NET here
 import '../App.css'
 import Znacka from './znacka';
 
+//utils
+import { formatTimeStamp } from '../utils/utils';
+
 interface SettingControlsProps {
   onRangeSet: (newTime: number) => void;
   currentTime: number;
@@ -14,24 +17,7 @@ interface SettingControlsProps {
   markerLocation: [number, number]
 }
 
-
-
-function formatTimeStamp(timestamp: number) {
-  let date = new Date(timestamp);
-  let options: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-    second: 'numeric'
-  };
-  return (date.toLocaleDateString('cs-CZ', options));
-}
-
 export default function SettingControls(props: SettingControlsProps) {
-
-
 
   const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newTime = e.target.valueAsNumber;
