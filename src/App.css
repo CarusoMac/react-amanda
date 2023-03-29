@@ -156,12 +156,9 @@ button {
 }
 
 .log-info-controls {
-  /* Set position to absolute */
-  /* position: absolute; */
-  /* Set top and right properties to 0 */
+  position: absolute;
   top: 0;
   right: 0;
-  /* Add some margin and padding */
 
 }
 
