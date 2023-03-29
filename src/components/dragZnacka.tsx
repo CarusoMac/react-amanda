@@ -12,7 +12,7 @@ interface DragZnackaProps {
 }
 
 export default function DragZnacka(props: DragZnackaProps) {
-  const [draggable, setDraggable] = useState(false)
+
   const [position, setPosition] = useState<[number, number]>([props.positions[0], props.positions[1]]);
   const markerRef = useRef<L.Marker<any>>(null)
   const eventHandlers = useMemo(
@@ -28,23 +28,14 @@ export default function DragZnacka(props: DragZnackaProps) {
     }),
     [],
   )
-  const toggleDraggable = useCallback(() => {
-    setDraggable((d) => !d)
-  }, [])
 
   return (
     <Marker
       eventHandlers={eventHandlers}
       position={position}
       ref={markerRef}
-      draggable={draggable}>
-      <Popup minWidth={90}>
-        <span onClick={toggleDraggable}>
-          {draggable
-            ? 'Marker is draggable'
-            : 'Click here to make marker draggable'}
-        </span>
-      </Popup>
+      draggable={true}>
+
     </Marker>
   )
 }

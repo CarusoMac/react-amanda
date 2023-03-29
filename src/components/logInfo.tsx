@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react'
 import data from '../data/log1.json'
-import { distance } from '../utils/utils';
+import { distance, formatTimeStamp } from '../utils/utils';
 import { logDTO } from './log.model';
 
 // fetch z DB na log s logID /. json export / lat, lon, measured_at
@@ -13,6 +13,11 @@ export default function LogInfo(props: logDTO) {
   const [currentCell, setCurrentCell] = useState(0);
   const [distanceFromMarker, setDistanceFromMarker] = useState(0);
   const targetDivRef = useRef<HTMLDivElement>(null);
+  const distances = data.map(point => ({ distance: distance(props.markerLocation[0], props.markerLocation[1], point.lat, point.lon), time: point.timestamp }));
+  const [minDistance, setMinDistance] = useState(0);
+  const [minDistanceTime, setMinDistanceTime] = useState(0);
+
+
 
 
   useEffect(() => {
@@ -29,6 +34,9 @@ export default function LogInfo(props: logDTO) {
     setCurrentCell(closestDataPoint.cellid);
     const newDistance = distance(currentLat, currentLon, props.markerLocation[0], props.markerLocation[1])
     setDistanceFromMarker(newDistance);
+    const { distance: minDistance, time: minDistanceTime } = distances.reduce((min, current) => current.distance < min.distance ? current : min);
+    setMinDistance(minDistance);
+    setMinDistanceTime(minDistanceTime);
     // ... do something with tempLat and tempLon ...
   }, [props.currentTime, props.markerLocation]);
 
@@ -45,45 +53,38 @@ export default function LogInfo(props: logDTO) {
 
 
   return (
-    <div className='log-info-card'>
-      <div className='row'>
-        <h3 className='col-4 align-items-center'>{props.logID}</h3>
-        <div className='col-8 d-flex align-items-center justify-content-end log-info-controls'>
-          {/* po clicku na delete */}
+    <div className='log-info-card container'>
+      <div className='row header'>
+        <h3 className='col-4 align-self-center'>{props.logID}</h3>
+        <div className='col-8 d-flex align-items-center justify-between log-info-controls'>
+
+          <input type="checkbox" className='mr-1' />
           <button className='log-delete' name={props.logID} onClick={handleLogDelete}>
             X
           </button>
-          <input type="checkbox" />
+
         </div>
       </div>
       <p>
-        lat: {currentLat}<br />
-        lng: {currentLon}
+        <span className="orange">lat:</span> <span>{currentLat}</span> <br />
+        <span className="orange">lng:</span> <span>{currentLon}</span>
       </p>
       <div ref={targetDivRef} style={{ display: 'none' }}>
-
         <hr />
-        cellID: {currentCell}<br />
+        <p><span className='orange'>cellID:</span> <span>{currentCell}</span></p>
         <hr />
-        vzdalenost od znacky {distanceFromMarker} m
-        <p>
-          akt
-        </p>
-        <p>
-          min
-          case
-        </p>
+        <p><span className='orange'>aktuálně od značky: </span> <span>{distanceFromMarker} m</span></p>
         <hr />
-        <p>
-          cas od <br />
-          cas do
-        </p>
+        <p><span className='orange'>min od značky: </span> <span>{minDistance} m</span></p>
+        <p>{formatTimeStamp(minDistanceTime)}</p>
       </div>
       <button onClick={handleHideButtonClick}>
-        {isVisible ? (
-          <span dangerouslySetInnerHTML={{ __html: '&#9679;&#9679;&#9679;' }} />
+        {!isVisible ? (
+
+          <span dangerouslySetInnerHTML={{ __html: '&#9661;' }} />
+
         ) : (
-          <span dangerouslySetInnerHTML={{ __html: '&#9679;&#9679;&#9679;' }} />
+          <span dangerouslySetInnerHTML={{ __html: '&#x25B3;' }} />
         )}
       </button>
     </div >

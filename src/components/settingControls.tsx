@@ -8,6 +8,7 @@ import Znacka from './znacka';
 
 //utils
 import { formatTimeStamp } from '../utils/utils';
+import FileUploadForm from './uploadForm';
 
 interface SettingControlsProps {
   onRangeSet: (newTime: number) => void;
@@ -89,7 +90,10 @@ export default function SettingControls(props: SettingControlsProps) {
           <Znacka markerLocation={props.markerLocation} />
 
         </div>
-        <div className="set-control-card col-4">Upload</div>
+        <div className="set-control-card col-4">
+          <FileUploadForm />
+
+        </div>
       </div>
 
     </>
