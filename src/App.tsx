@@ -31,7 +31,6 @@ function App() {
 
   return (
     <>
-      <h2> 29/3/2023</h2>
       <div className='main-container container'>
         <SettingControls onRangeSet={setCurrentTime} currentTime={currentTime} firstTimeStamp={firstTimeStamp} lastTimeStamp={lastTimeStamp} markerLocation={markerLocation} />
         {/* <UploadFile /> */}
@@ -45,6 +44,12 @@ function App() {
         {/* according to first and last coordinates, set zoom and center the map */}
 
       </div>
+
+      {/* <footer className='bd-footer py-3 mt-3'>
+        <div className='container'>
+          ???
+        </div>
+      </footer> */}
 
     </>
   );

@@ -25,14 +25,20 @@ export default function DataListContainer(props: DataListContainerProps) {
   }, [LogDeleteId]);
 
   return (
-    <div className='col-3 datalist-container'>
-      {logsIDarr.map((logID) => <LogInfo key={logID} logID={logID} onLogDelete={setLogDeleteId} currentTime={props.currentTime} markerLocation={props.markerLocation} />)}
+    <div className='col-3 datalist-container'><ul style={{ listStyle: 'none' }}>
+      {logsIDarr.map((logID) => <li
+
+
+      >
+
+
+        <LogInfo key={logID} logID={logID} onLogDelete={setLogDeleteId} currentTime={props.currentTime} markerLocation={props.markerLocation} /></li>)}
       {/* test code */}
       <div>
         {/* {props.logs.map(log => <LogInfo {...log} key={log.logID} />)} */}
       </div>
       {/* end of test code */}
-
+    </ul>
     </div>
   );
 }

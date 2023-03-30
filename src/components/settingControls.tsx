@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useEffect, useRef } from 'react';
 
+
 //data
 import log1 from '../data/log1.json' // fetch from .NET here
 import '../App.css'
@@ -8,7 +9,7 @@ import Znacka from './znacka';
 
 //utils
 import { formatTimeStamp } from '../utils/utils';
-import FileUploadForm from './uploadForm';
+import FileUploadForm from './forms/uploadForm';
 
 interface SettingControlsProps {
   onRangeSet: (newTime: number) => void;
@@ -62,7 +63,7 @@ export default function SettingControls(props: SettingControlsProps) {
 
   return (
     <>
-      <div className="d-flex justify-content-between">
+      <div className="d-flex justify-content-between header-control-container">
         <div className="set-control-card col-4">
           <div className="set-control-container">
             <h3>Nastaveni casu</h3>
@@ -85,7 +86,7 @@ export default function SettingControls(props: SettingControlsProps) {
             </div>
           </div>
         </div>
-        <div className="set-control-card col-4">
+        <div className="set-control-card col-3">
 
           <Znacka markerLocation={props.markerLocation} />
 
