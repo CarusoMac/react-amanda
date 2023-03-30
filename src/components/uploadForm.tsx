@@ -42,9 +42,10 @@ function FileUploadForm() {
       <h3>Nahrát soubor</h3>
       <form onSubmit={onFormSubmit}>
         <label htmlFor="file" className="upload-button">
-          Vybrat soubor .csv
+          Nahrát nový soubor .csv
           <input type="file" id="file" name="file" accept="text/csv" onChange={onFileChange} multiple style={{ display: 'none' }} />
         </label>
+        <button className="upload-button">Vybrat z databáze</button>
         <button type="submit" className='file-submit-btn '>Potvrdit</button><br />
         {selectedFiles.length > 0 && (
           <div>
