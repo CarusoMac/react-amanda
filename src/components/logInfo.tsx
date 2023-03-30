@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react'
 import data from '../data/log1.json'
 import { distance, formatTimeStamp } from '../utils/utils';
 import { logDTO } from './log.model';
+import axios, { AxiosResponse } from 'axios';
 
 // fetch z DB na log s logID /. json export / lat, lon, measured_at
 
@@ -18,7 +19,12 @@ export default function LogInfo(props: logDTO) {
   const [minDistanceTime, setMinDistanceTime] = useState(0);
 
 
-
+  // useEffect(() => {
+  //   axios.get('https://localhost:7171/api/logs/{props.logID}')
+  //     .then((response: AxiosResponse<logDTO[]>) => {
+  //       console.log(response.data);
+  //     })
+  // }, [])
 
   useEffect(() => {
     // Find the data point with the closest timestamp to the current time

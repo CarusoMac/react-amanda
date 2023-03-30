@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import LogInfo from './logInfo';
 import { logDTO } from './log.model';
+import axios, { AxiosResponse } from 'axios';
+
 
 const numberOfActiveLogs = 3; // fake fetch z db
 //fetch z DB bude dotaz na DB na vsechny logy zobrazi se okno s datem vytvoreni a jmenem logu + datum dne ze ktereho ten log je, po odskrtnuti checkboxu a submitu se nahrajou logy do jsonu
@@ -24,14 +26,17 @@ export default function DataListContainer(props: DataListContainerProps) {
     }
   }, [LogDeleteId]);
 
+  useEffect(() => {
+    axios.get('https://localhost:7171/api/logs')
+      .then((response: AxiosResponse<logDTO[]>) => {
+        console.log(response.data);
+      })
+  }, [])
+
+
   return (
     <div className='col-3 datalist-container'><ul style={{ listStyle: 'none' }}>
-      {logsIDarr.map((logID) => <li
-
-
-      >
-
-
+      {logsIDarr.map((logID) => <li>
         <LogInfo key={logID} logID={logID} onLogDelete={setLogDeleteId} currentTime={props.currentTime} markerLocation={props.markerLocation} /></li>)}
       {/* test code */}
       <div>
