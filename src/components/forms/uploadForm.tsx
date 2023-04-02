@@ -1,35 +1,54 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
-import axios from 'axios';
+import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
+import axios, { AxiosResponse } from 'axios';
+import { urlLogs } from '../../endpoints';
+import { logDTO } from '../log.model';
 
 function FileUploadForm() {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [message, setMessage] = useState<string>('');
+  const [loading, setLoading] = useState(false);
+  const [fileInputValue, setFileInputTypeValue] = useState("");
+
+  useEffect(() => {
+    setFileInputTypeValue("")
+  }, [message])
 
   const onFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       const newSelectedFiles = Array.from(event.target.files);
       setSelectedFiles([...selectedFiles, ...newSelectedFiles]);
-      setMessage('')
     }
   };
 
-  const onFormSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  function onFormSubmit() {
+
     if (selectedFiles.length === 0) {
       setMessage('Vyberte nejméně jeden soubor');
       return;
     }
-
+    setLoading(true);
     const formData = new FormData();
-    selectedFiles.forEach(file => formData.append('files', file));
+    selectedFiles.forEach(file => formData.append('file', file));
 
-    axios.post('/api/upload', formData)
+    axios.post(`${urlLogs}/upload`, formData, {
+
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
       .then((response) => {
-        setMessage('Soubor byl úspěšně nahrán do databáze');
+        setLoading(false);
+        console.log(response);
+        setMessage('Soubor byl úspěšně nahrán do DB');
+        setTimeout(clearMessage, 3000);
       })
-      .catch((error) => {
+      .catch(() => {
+        setLoading(false);
         setMessage(`Nahrání souboru selhalo`);
+        setTimeout(clearMessage, 3000);
       });
+
+    setSelectedFiles([]);
   };
 
   const removeFile = (fileName: string) => {
@@ -37,16 +56,25 @@ function FileUploadForm() {
     setSelectedFiles(updatedFiles);
   };
 
+
+
+
+  const clearMessage = () => {
+    setMessage('');
+  };
+
   return (
     <div className='set-marker-container'>
-      <h3>Nahrát soubor</h3>
-      <form onSubmit={onFormSubmit}>
-        <label htmlFor="file" className="upload-button">
-          Nahrát nový soubor .csv
-          <input type="file" id="file" name="file" accept="text/csv" onChange={onFileChange} multiple style={{ display: 'none' }} />
+
+      <form>
+        <label htmlFor="file" className="upload-button" onClick={() => clearMessage}>
+          Pridat nový zaznam .csv
+          <input type="file" id="file" name="file" accept="text/csv" value={fileInputValue} onChange={onFileChange} multiple style={{ display: 'none' }} />
         </label>
-        <button className="upload-button">Vybrat z databáze</button>
-        <button type="submit" className='file-submit-btn '>Potvrdit</button><br />
+        <button type="button" className='file-submit-btn' disabled={selectedFiles.length ? false : true} onClick={onFormSubmit}>Poslat do databaze</button>
+
+
+
         {selectedFiles.length > 0 && (
           <div>
             <br />
@@ -62,9 +90,14 @@ function FileUploadForm() {
               ))}
             </ul>
           </div>
+
         )}
         <br />
-        {message}
+        {/* {loading ? <img src="loading.gif" alt="Loading" /> : <p>{message}</p>} */}
+        {loading ? <p>...nahravam...</p> : <p>{message}</p>}
+
+
+
 
       </form>
 
