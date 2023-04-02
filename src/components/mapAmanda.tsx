@@ -51,7 +51,6 @@ export default function MapComponent(props: MapComponentProps) {
 
   useEffect(() => {
     props.onMarkerChange(markerLocation);
-    console.log(markerLocation);
     //setDistance
   }, [markerLocation]);
 

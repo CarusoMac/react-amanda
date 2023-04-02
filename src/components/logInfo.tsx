@@ -19,13 +19,6 @@ export default function LogInfo(props: logDTO) {
   const [minDistanceTime, setMinDistanceTime] = useState(0);
 
 
-  // useEffect(() => {
-  //   axios.get('https://localhost:7171/api/logs/{props.logID}')
-  //     .then((response: AxiosResponse<logDTO[]>) => {
-  //       console.log(response.data);
-  //     })
-  // }, [])
-
   useEffect(() => {
     // Find the data point with the closest timestamp to the current time
     const closestDataPoint = data.reduce((closest, current) => {

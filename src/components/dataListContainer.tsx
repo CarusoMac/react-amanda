@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import LogInfo from './logInfo';
 import { logDTO } from './log.model';
 import axios, { AxiosResponse } from 'axios';
+import { urlLogs } from '../endpoints';
+import ModalForm from './forms/modalForm';
 
 
 const numberOfActiveLogs = 3; // fake fetch z db
@@ -14,9 +16,21 @@ interface DataListContainerProps {
   // logs: logDTO[];
 }
 
+
 export default function DataListContainer(props: DataListContainerProps) {
   const [logsIDarr, setLogsIDarr] = useState(['2Ad', 'B', 'C']); //info vytazene z vytvoreneho jsonu
   const [LogDeleteId, setLogDeleteId] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [listDb, setListDb] = useState<logDTO[]>([]);
+
+  const onAPIRequest = () => {
+    setShowModal(true);
+    axios.get(urlLogs)
+      .then((response: AxiosResponse<logDTO[]>) => {
+        setListDb(response.data);
+      })
+
+  }
 
   useEffect(() => {
     if (LogDeleteId) {
@@ -26,24 +40,27 @@ export default function DataListContainer(props: DataListContainerProps) {
     }
   }, [LogDeleteId]);
 
-  useEffect(() => {
-    axios.get('https://localhost:7171/api/logs')
-      .then((response: AxiosResponse<logDTO[]>) => {
-        console.log(response.data);
-      })
-  }, [])
+
 
 
   return (
-    <div className='col-3 datalist-container'><ul style={{ listStyle: 'none' }}>
+    <div className='col-3 datalist-container'>
+
+      <button className="upload-button" onClick={() => {
+        onAPIRequest();
+        setShowModal(true);
+      }}>Vybrat z databáze</button>
+      {showModal &&
+        <ModalForm showModal={showModal} handleModalClose={() => setShowModal(false)} />
+      }
+
+      {/* <ul style={{ listStyle: 'none' }}>
+      
+      
       {logsIDarr.map((logID) => <li>
         <LogInfo key={logID} logID={logID} onLogDelete={setLogDeleteId} currentTime={props.currentTime} markerLocation={props.markerLocation} /></li>)}
-      {/* test code */}
-      <div>
-        {/* {props.logs.map(log => <LogInfo {...log} key={log.logID} />)} */}
-      </div>
-      {/* end of test code */}
-    </ul>
+      
+    </ul> */}
     </div>
   );
 }

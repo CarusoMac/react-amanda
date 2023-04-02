@@ -92,7 +92,7 @@ export default function SettingControls(props: SettingControlsProps) {
 
         </div>
         <div className="set-control-card col-4">
-          <FileUploadForm />
+          {/* <FileUploadForm /> */}
 
         </div>
       </div>
