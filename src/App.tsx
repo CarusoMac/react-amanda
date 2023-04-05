@@ -1,7 +1,6 @@
 //dependecies
 import React from 'react';
 import { useState, useEffect } from 'react';
-import log1 from './data/log1.json' // fetch from .NET here
 //styles
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
@@ -10,46 +9,52 @@ import './App.css';
 import MapComponent from './components/mapAmanda';
 import SettingControls from './components/settingControls';
 import DataListContainer from './components/dataListContainer';
+import { LogInfoDTO } from './DTOs/logInfoDTO';
 
 
-let timeStamps: number[] = [];
-log1.map(timeStamp => {
-  timeStamps.push(timeStamp.timestamp);
-});
-let firstTimeStamp = timeStamps[0];
-let lastTimeStamp = timeStamps[timeStamps.length - 1];
+
 
 
 function App() {
-  const [currentTime, setCurrentTime] = useState(firstTimeStamp); //in ms
+  const [currentTime, setCurrentTime] = useState(0); //in ms
   const [markerLocation, setMarkerLocation] = useState<[number, number]>([0, 0]);
+  const [dataList, setDataList] = useState<LogInfoDTO[][]>([]);
+  const [timeStampRange, setTimeStampRange] = useState<[number, number]>([0, 1]);
+
 
   useEffect(() => {
-    console.log(markerLocation);
-    //setDistance
-  }, [markerLocation]);
+    let timeStamps: number[] = [];
+    dataList.map((data) => {
+      data.map(timeStamp => {
+        timeStamps.push(timeStamp.measured_at);
+      });
+    })
+    const min = Math.min(...timeStamps);
+    const max = Math.max(...timeStamps);
+    setTimeStampRange([min, max]);
+    setCurrentTime(min)
+  }, [dataList])
+
+  const handleNewDataList = (newDataList: LogInfoDTO[][]) => {
+    setDataList(newDataList)
+  }
+
+
 
   return (
     <>
       <div className='main-container container'>
-        <SettingControls onRangeSet={setCurrentTime} currentTime={currentTime} firstTimeStamp={firstTimeStamp} lastTimeStamp={lastTimeStamp} markerLocation={markerLocation} />
+        <SettingControls onRangeSet={setCurrentTime} currentTime={currentTime} timeStampRange={timeStampRange} markerLocation={markerLocation} />
         {/* <UploadFile /> */}
         <hr />
         <div className='row'>
-          <MapComponent currentTime={currentTime} onMarkerChange={setMarkerLocation} />
-          <DataListContainer currentTime={currentTime} markerLocation={markerLocation} />
+          <MapComponent currentTime={currentTime} onMarkerChange={setMarkerLocation} dataList={dataList} />
+          <DataListContainer currentTime={currentTime} markerLocation={markerLocation} onDataListChange={handleNewDataList} />
 
         </div>
-
-        {/* according to first and last coordinates, set zoom and center the map */}
 
       </div>
 
-      {/* <footer className='bd-footer py-3 mt-3'>
-        <div className='container'>
-          ???
-        </div>
-      </footer> */}
 
     </>
   );

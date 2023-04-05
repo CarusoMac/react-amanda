@@ -1,66 +1,75 @@
 import React, { useEffect, useState } from 'react';
 import LogInfo from './logInfo';
-import { logDTO } from './log.model';
+import { logDTO } from '../DTOs/log.model';
 import axios, { AxiosResponse } from 'axios';
 import { urlLogs } from '../endpoints';
 import ModalForm from './forms/modalForm';
+import { LogInfoDTO } from '../DTOs/logInfoDTO';
 
-
-const numberOfActiveLogs = 3; // fake fetch z db
-//fetch z DB bude dotaz na DB na vsechny logy zobrazi se okno s datem vytvoreni a jmenem logu + datum dne ze ktereho ten log je, po odskrtnuti checkboxu a submitu se nahrajou logy do jsonu
-// z vytvoreneho jsonu bude probihat zobrazovani a vypocty ve frontendu
 
 interface DataListContainerProps {
   currentTime: number;
   markerLocation: [number, number];
-  // logs: logDTO[];
+  onDataListChange: (newDataList: LogInfoDTO[][]) => void
 }
 
-
 export default function DataListContainer(props: DataListContainerProps) {
-  const [logsIDarr, setLogsIDarr] = useState(['2Ad', 'B', 'C']); //info vytazene z vytvoreneho jsonu
+  const [logsToDisplay, setLogsToDisplay] = useState<string[]>([]);
   const [LogDeleteId, setLogDeleteId] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [listDb, setListDb] = useState<logDTO[]>([]);
+  const [dataList, setDataList] = useState<LogInfoDTO[][]>([]);
 
-  const onAPIRequest = () => {
-    setShowModal(true);
-    axios.get(urlLogs)
-      .then((response: AxiosResponse<logDTO[]>) => {
-        setListDb(response.data);
+  // getting checked box , selected logs from DB
+  useEffect(() => {
+    Promise.all(logsToDisplay.map(file => axios.get<LogInfoDTO[]>(`${urlLogs}/${file}`)))
+      .then(responses => {
+        const dataList: LogInfoDTO[][] = responses.map(response => response.data);
+        const tempDatalist = dataList;
+        setDataList(tempDatalist);
+        props.onDataListChange(tempDatalist);
       })
+      .catch(error => {
+        console.error("error: " + error);
+      });
+  }, [logsToDisplay]);
 
+
+  // x button on loginfo
+  function handleLogHide(newValue: string) {
+    setLogDeleteId(newValue);
+    const tempLogsToDisplay = logsToDisplay.filter(item => item !== newValue); // remove the matching item from the array
+    setLogsToDisplay(tempLogsToDisplay);
   }
 
-  useEffect(() => {
-    if (LogDeleteId) {
-      setLogsIDarr((prevLogsIDarr) =>
-        prevLogsIDarr.filter((logId) => logId !== LogDeleteId)
-      );
-    }
-  }, [LogDeleteId]);
+  //checkbox - display from db, callback
+  function handleDisplayChange(newLogsToDisplay: string[]) {
+    setLogsToDisplay(newLogsToDisplay)
+  }
 
-
-
+  function generateRandomKey() {
+    return Math.floor(Math.random() * 1000000);
+  }
 
   return (
     <div className='col-3 datalist-container'>
 
-      <button className="upload-button" onClick={() => {
-        onAPIRequest();
+      <button className="plus-button" onClick={() => {
+        // onAPIRequest();
         setShowModal(true);
-      }}>Vybrat z databáze</button>
+      }}>Přidat záznam</button>
       {showModal &&
-        <ModalForm showModal={showModal} handleModalClose={() => setShowModal(false)} />
+        <ModalForm showModal={showModal} handleModalClose={() => setShowModal(false)} onDisplayChange={handleDisplayChange} />
       }
 
-      {/* <ul style={{ listStyle: 'none' }}>
-      
-      
-      {logsIDarr.map((logID) => <li>
-        <LogInfo key={logID} logID={logID} onLogDelete={setLogDeleteId} currentTime={props.currentTime} markerLocation={props.markerLocation} /></li>)}
-      
-    </ul> */}
+      <ul style={{ listStyle: 'none' }}>
+
+        {dataList.map((zaznam) =>
+          <li key={generateRandomKey()}>
+            <LogInfo data={zaznam} logDisplayID={zaznam[0].csvFileId} onLogHide={handleLogHide} currentTime={props.currentTime} markerLocation={props.markerLocation} />
+          </li>)
+        }
+      </ul>
     </div>
   );
 }

@@ -3,62 +3,71 @@ import LogDbModal from "./logDbModal";
 import FileUploadForm from "./uploadForm";
 import axios, { AxiosResponse } from 'axios';
 import { urlLogs } from '../../endpoints';
-import { ListDTO } from "./listDTO";
-import Pagination from "../../utils/pagination";
+import { ListDTO } from "../../DTOs/listDTO";
 
 type ModalProps = {
   showModal: boolean;
   handleModalClose: (showModal: boolean) => void;
-  // Other props here...
+  onDisplayChange: (_selectedLogs: string[]) => void;
 };
 
 export default function ModalForm(props: ModalProps) {
-  const [logs, setLogs] = useState<ListDTO[]>([]);
-  const [totalAmountOfPages, setTotalAmountOfPages] = useState(0);
-  const [recordsPerPage, setRecordsPerPage] = useState(1);
-  const [page, setPage] = useState(1);
+  const [filesDB, setFilesDB] = useState<ListDTO[]>([]);
+  const [selectedLogs, setSelectedLogs] = useState<string[]>([]);
+  const [isNewUpload, setIsNewUpload] = useState(true);
 
+
+  //import seznamu dostupnych souboru v databazi
   useEffect(() => {
     axios.get<ListDTO[]>(`${urlLogs}/import`)
       .then(response => {
-
-        // try {
-        //   // const totalAmountOfRecords = parseInt(response.headers["TotalRecordsAmount"], 10);
-        //   const totalAmountOfRecords = 10;
-
-        //   setTotalAmountOfPages(Math.ceil(totalAmountOfRecords / recordsPerPage));
-        //   // console.log("totalAmountOfRecords" + { totalAmountOfRecords })
-        // } catch (exception) {
-        //   console.log("nevyslo")
-        // }
-        setLogs(response.data);
-
+        setFilesDB(response.data);
       })
       .catch(error => {
         console.error(error);
       });
-    // }, [page, recordsPerPage]);
-  }, []);
+  }, [isNewUpload]);
 
 
+  //tested - ok
+  const handleIsNewUploadChange = (change: boolean) => {
+    const tempBool = isNewUpload;
+    setIsNewUpload(!tempBool);
+    setFilesDB([]);
+  };
+
+  //tested - ok
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Handle form submission here
     props.handleModalClose(false);
+    props.onDisplayChange(selectedLogs);
   };
+
+  //tested - ok
+  const handleCheckBoxChange = (event: React.FormEvent<HTMLInputElement>) => {
+    const id = event.currentTarget.id;
+    const isChecked = event.currentTarget.checked;
+    if (isChecked) {
+      const tempSelectedLogs = selectedLogs
+      setSelectedLogs([...selectedLogs, id]);
+    } else {
+      setSelectedLogs(selectedLogs.filter((logId) => logId !== id));
+    }
+  };
+
 
   return (
     <>
+      {/* pokud je showModal true zobrazi se mofal */}
       {props.showModal && (
         <div className="modal">
           <div className="modal-content">
-            <h2>Vyberte zaznamy z DB</h2><button type="submit" className="file-submit-btn">Zobrazit vybrane zaznamy</button>
-
             {/* <Pagination currentPage={page} totalAmountOfPages={totalAmountOfPages} onChange={newPage => setPage(newPage)} radio={2} /> */}
-            <form onSubmit={handleSubmit}>
-
-              <table >
-                <thead className="container">
+            <form onSubmit={handleSubmit} className="justify-items-center">
+              <h2>Vyberte zaznamy z DB</h2>
+              <button type="submit" className="file-submit-btn">Zobrazit vybrane zaznamy</button>
+              <table className="container ListOfRecords">
+                <thead>
                   <tr className="row">
                     <th className="col-2">Soubor</th>
                     <th className="col-3">Nahráno</th>
@@ -67,17 +76,30 @@ export default function ModalForm(props: ModalProps) {
                     <th className="col-1">Zobrazit</th>
                   </tr>
                 </thead>
-                <tbody className="ListOfRecords">
-                  {logs.map((log, index) => (
-                    <LogDbModal key={index} csvFileId={log.csvFileId} csvFileName={log.csvFileName} userId={log.userId} uploadDate={log.uploadDate} firstTimeStamp={log.firstTimeStamp} lastTimeStamp={log.lastTimeStamp} logId={index} />
-                  ))}
 
+                <tbody>
+                  {filesDB.map((log, index) => (
+                    <tr className="row">
+                      <LogDbModal
+                        key={index}
+                        csvFileId={log.csvFileId}
+                        csvFileName={log.csvFileName}
+                        userId={log.userId}
+                        uploadDate={log.uploadDate}
+                        firstTimeStamp={log.firstTimeStamp}
+                        lastTimeStamp={log.lastTimeStamp}
+                        logId={index}
+                      />
+                      <td className='col-1'><input type='checkbox' id={log.csvFileId} onChange={handleCheckBoxChange} /></td>
+                    </tr>
+                  ))}
                 </tbody>
+
               </table>
 
 
             </form>
-            <FileUploadForm />
+            <FileUploadForm isNewUpload={handleIsNewUploadChange} />
             <button
               className="close-button"
               onClick={() => props.handleModalClose(false)}

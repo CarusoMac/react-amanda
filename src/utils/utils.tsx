@@ -29,3 +29,18 @@ export const formatTimeStamp = (timestamp: number) => {
   };
   return (date.toLocaleDateString('cs-CZ', options));
 }
+
+export const findClosestTimestamp = (timestamps: number[], currentTime: number): number => {
+  let closestTimestamp = timestamps[0];
+  let minDiff = Math.abs(timestamps[0] - currentTime);
+
+  timestamps.forEach((timestamp) => {
+    const diff = Math.abs(timestamp - currentTime);
+    if (diff < minDiff) {
+      minDiff = diff;
+      closestTimestamp = timestamp;
+    }
+  });
+
+  return closestTimestamp;
+};

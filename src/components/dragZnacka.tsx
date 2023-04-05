@@ -1,11 +1,8 @@
-import React, { useRef, useCallback, useMemo, useState } from 'react'
+import React, { useRef, useCallback, useMemo, useState, useEffect } from 'react'
 import { Marker, Popup } from 'react-leaflet'
 import L, { LatLng } from 'leaflet';
 
-const center = {
-  lat: 51.505,
-  lng: -0.09,
-}
+
 interface DragZnackaProps {
   positions: [number, number]
   onPositionChange: (position: [number, number]) => void;
@@ -28,6 +25,11 @@ export default function DragZnacka(props: DragZnackaProps) {
     }),
     [],
   )
+
+  useEffect(() => {
+    setPosition([props.positions[0], props.positions[1]])
+  }, [props.positions])
+
 
   return (
     <Marker

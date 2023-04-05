@@ -357,7 +357,6 @@ input[type=range]::-moz-range-thumb {
   position: relative;
   width: 75%;
   height: 80%;
-  font-size: 0.8rem;
 }
 
 .close-button {
@@ -371,8 +370,21 @@ input[type=range]::-moz-range-thumb {
 }
 
 .ListOfRecords {
-  height: 200px;
+  max-height: 200px !important;
   overflow-y: scroll;
+  padding: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  margin-bottom: 1.1rem;
+}
+
+
+.ListOfRecords tr {
+  margin: 10px;
+}
+
+.plus-button {
+  color: rgb(199, 144, 42);
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
 }

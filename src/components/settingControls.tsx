@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from 'react';
 
 
 //data
-import log1 from '../data/log1.json' // fetch from .NET here
 import '../App.css'
 import Znacka from './znacka';
 
@@ -14,9 +13,8 @@ import FileUploadForm from './forms/uploadForm';
 interface SettingControlsProps {
   onRangeSet: (newTime: number) => void;
   currentTime: number;
-  firstTimeStamp: number;
-  lastTimeStamp: number;
-  markerLocation: [number, number]
+  timeStampRange: [number, number];
+  markerLocation: [number, number];
 }
 
 export default function SettingControls(props: SettingControlsProps) {
@@ -49,17 +47,19 @@ export default function SettingControls(props: SettingControlsProps) {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      if (props.currentTime < props.lastTimeStamp + 30000 && isPlaying) {
+      if (isPlaying) {
         let temptime = props.currentTime;
-        props.onRangeSet(temptime + 30000);
+        if (temptime < props.timeStampRange[1]) {
+          props.onRangeSet(temptime + 30000);
+        } else {
+          setIsPlaying(false);
+        }
       }
     }, 1000);
     return () => {
       clearTimeout(intervalId);
     };
   }, [props.currentTime, isPlaying]);
-
-
 
   return (
     <>
@@ -69,7 +69,7 @@ export default function SettingControls(props: SettingControlsProps) {
             <h3>Nastaveni casu</h3>
 
             <div className="range-slider-container">
-              <input className='range-slider' type='range' min={props.firstTimeStamp} max={props.lastTimeStamp} step='30000' value={props.currentTime} onChange={handleTimeChange} />
+              <input className='range-slider' type='range' min={props.timeStampRange[0]} max={props.timeStampRange[1]} step='30000' value={props.currentTime} onChange={handleTimeChange} />
             </div>
 
             <div className="slider-controls-container">
