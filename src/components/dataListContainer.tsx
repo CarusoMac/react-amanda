@@ -65,7 +65,7 @@ export default function DataListContainer(props: DataListContainerProps) {
       <ul style={{ listStyle: 'none' }}>
 
         {dataList.map((zaznam) =>
-          <li key={generateRandomKey()}>
+          <li key={zaznam[0].csvFileId}>
             <LogInfo data={zaznam} logDisplayID={zaznam[0].csvFileId} onLogHide={handleLogHide} currentTime={props.currentTime} markerLocation={props.markerLocation} />
           </li>)
         }

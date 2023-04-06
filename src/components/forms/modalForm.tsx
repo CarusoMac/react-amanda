@@ -79,7 +79,7 @@ export default function ModalForm(props: ModalProps) {
 
                 <tbody>
                   {filesDB.map((log, index) => (
-                    <tr className="row">
+                    <tr key={index} className="row">
                       <LogDbModal
                         key={index}
                         csvFileId={log.csvFileId}
