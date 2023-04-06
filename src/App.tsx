@@ -44,11 +44,11 @@ function App() {
   return (
     <>
       <div className='main-container container'>
-        <SettingControls onRangeSet={setCurrentTime} currentTime={currentTime} timeStampRange={timeStampRange} markerLocation={markerLocation} />
+        <SettingControls onRangeSet={setCurrentTime} setMarkerLocation={setMarkerLocation} currentTime={currentTime} timeStampRange={timeStampRange} markerLocation={markerLocation} />
         {/* <UploadFile /> */}
         <hr />
         <div className='row'>
-          <MapComponent currentTime={currentTime} onMarkerChange={setMarkerLocation} dataList={dataList} />
+          <MapComponent currentTime={currentTime} onMarkerChange={setMarkerLocation} dataList={dataList} markerLocation={markerLocation} />
           <DataListContainer currentTime={currentTime} markerLocation={markerLocation} onDataListChange={handleNewDataList} />
 
         </div>

@@ -15,6 +15,7 @@ interface SettingControlsProps {
   currentTime: number;
   timeStampRange: [number, number];
   markerLocation: [number, number];
+  setMarkerLocation: (newMarkerLocation: [number, number]) => void
 }
 
 export default function SettingControls(props: SettingControlsProps) {
@@ -88,7 +89,7 @@ export default function SettingControls(props: SettingControlsProps) {
         </div>
         <div className="set-control-card col-3">
 
-          <Znacka markerLocation={props.markerLocation} />
+          <Znacka markerLocation={props.markerLocation} setMarkerLocation={props.setMarkerLocation} />
 
         </div>
         <div className="set-control-card col-4">

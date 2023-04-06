@@ -7,4 +7,5 @@ export interface ListDTO {
   uploadDate: string;
   firstTimeStamp: number;
   lastTimeStamp: number;
+  fileTitle: string;
 }

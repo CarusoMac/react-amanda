@@ -17,6 +17,7 @@ interface MapComponentProps {
   currentTime: number;
   onMarkerChange: (position: [number, number]) => void;
   dataList: LogInfoDTO[][];
+  markerLocation: [number, number];
 }
 
 //vypocteni mapoveho centra
@@ -46,10 +47,7 @@ export default function MapComponent(props: MapComponentProps) {
     setMapCenter(newCenter);
   }, [props.dataList]);
 
-  //test passing props - ok
-  // useEffect(() => {
-  //   console.log(props.dataList);
-  // }, [props.dataList]);
+
 
 
   useEffect(() => {
@@ -88,11 +86,11 @@ export default function MapComponent(props: MapComponentProps) {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <DragZnacka positions={mapCenter} onPositionChange={setMarkerLocation} />
+          <DragZnacka key={markerLocation.toString()} positions={markerLocation[0] !== 0 ? markerLocation : mapCenter} onPositionChange={setMarkerLocation} />
 
           <LayerGroup>
-            {pathInTimeCollection.map(path => (
-              <Polyline positions={path} color="red" />
+            {pathInTimeCollection.map((path, index) => (
+              <Polyline key={index} positions={path} color="red" />
             ))}
           </LayerGroup>
 

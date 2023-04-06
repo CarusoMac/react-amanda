@@ -388,3 +388,15 @@ input[type=range]::-moz-range-thumb {
   padding: 0;
   margin: 0;
 }
+
+.log-title {
+  cursor: pointer;
+  background-color: transparent;
+  outline: none;
+  border: none;
+}
+
+.log-p-title {
+  font-size: 1.1rem;
+  color: rgb(199, 144, 42);
+}
