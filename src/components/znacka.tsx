@@ -8,6 +8,14 @@ interface ZnackaProps {
 
 export default function Znacka(props: ZnackaProps) {
 
+  const handleMarkerLonChange = (event: ChangeEvent<HTMLInputElement>) => {
+    props.setMarkerLocation([props.markerLocation[0], parseFloat(event.target.value)]);
+  }
+
+  const handleMarkerLatChange = (event: ChangeEvent<HTMLInputElement>) => {
+    props.setMarkerLocation([parseFloat(event.target.value), props.markerLocation[1]]);
+  }
+
 
   return (
 
@@ -21,11 +29,11 @@ export default function Znacka(props: ZnackaProps) {
           name="latitude" placeholder="zeměpisná šířka"
           value={props.markerLocation[0]}
           step="0.001"
-          onChange={(event) => props.setMarkerLocation([parseFloat(event.target.value), props.markerLocation[1]])} /> lat</label> <br />
+          onChange={handleMarkerLatChange} /> lat</label> <br />
       <label htmlFor="longitude">
         <input type="number" id="longitude" name="longitude" placeholder="zeměpisná délka" value={props.markerLocation[1]}
           step="0.001"
-          onChange={(event) => props.setMarkerLocation([props.markerLocation[0], parseFloat(event.target.value)])} /> lng</label>
+          onChange={handleMarkerLonChange} /> lng</label>
     </div>
   )
 }

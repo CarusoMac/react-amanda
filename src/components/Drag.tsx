@@ -5,7 +5,7 @@ import L, { LatLng } from 'leaflet';
 
 interface DragZnackaProps {
   positions: [number, number]
-  onPositionChange: (position: [number, number]) => void;
+  handleDrag: (position: [number, number]) => void;
 }
 
 export default function DragZnacka(props: DragZnackaProps) {
@@ -18,8 +18,8 @@ export default function DragZnacka(props: DragZnackaProps) {
         const marker = markerRef.current
         if (marker != null) {
           const latlng: LatLng = marker.getLatLng()
-          setPosition([latlng.lat, latlng.lng])
-          props.onPositionChange([latlng.lat, latlng.lng]);
+          props.handleDrag([latlng.lat, latlng.lng]);
+
         }
       },
     }),
@@ -29,6 +29,7 @@ export default function DragZnacka(props: DragZnackaProps) {
   useEffect(() => {
     setPosition([props.positions[0], props.positions[1]])
   }, [props.positions])
+
 
 
   return (

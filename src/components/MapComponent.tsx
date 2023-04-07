@@ -39,7 +39,7 @@ export default function MapComponent(props: MapComponentProps) {
   // const [currentLocation, setCurrentLocation] = useState([log1[log1.length - 1].lat, log1[log1.length - 1].lon]);
   const [pathInTimeCollection, setPathInTimeCollection] = useState<[number, number][][]>([]);
   const [mapCenter, setMapCenter] = useState<[number, number]>([0, 0]);
-  const [markerLocation, setMarkerLocation] = useState(mapCenter)
+
 
   useEffect(() => {
     const newCenter = mapcenter(props.dataList);
@@ -68,14 +68,6 @@ export default function MapComponent(props: MapComponentProps) {
   }, [props.currentTime]);
 
 
-
-  useEffect(() => {
-    props.onMarkerChange(markerLocation);
-  }, [markerLocation]);
-
-
-
-
   return (
     <>
       <div className='col-9'>
@@ -86,7 +78,7 @@ export default function MapComponent(props: MapComponentProps) {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <DragZnacka key={markerLocation.toString()} positions={markerLocation[0] !== 0 ? markerLocation : mapCenter} onPositionChange={setMarkerLocation} />
+          <DragZnacka positions={props.markerLocation[0] !== 0 ? props.markerLocation : mapCenter} handleDrag={props.onMarkerChange} />
 
           <LayerGroup>
             {pathInTimeCollection.map((path, index) => (
