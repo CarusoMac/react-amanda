@@ -16,7 +16,7 @@ export default function LogInfo(props: logDTO) {
   const [distanceFromMarker, setDistanceFromMarker] = useState(0);
   const [minDistance, setMinDistance] = useState(0);
   const [minDistanceTime, setMinDistanceTime] = useState(0);
-  const [logDisplayText, setLogDisplayText] = useState(props.logDisplayID);
+  // const [logDisplayText, setLogDisplayText] = useState(props.logDisplayID);
 
 
   const data = props.data;
@@ -62,8 +62,6 @@ export default function LogInfo(props: logDTO) {
     const newValue = props.logDisplayID
     props.onLogHide(newValue);
   };
-
-
 
   return (
     <div className='log-info-card container'>
