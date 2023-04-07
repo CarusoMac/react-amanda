@@ -19,7 +19,7 @@ export default function DataListContainer(props: DataListContainerProps) {
   const [showModal, setShowModal] = useState(false);
   const [listDb, setListDb] = useState<logDTO[]>([]);
   const [dataList, setDataList] = useState<LogInfoDTO[][]>([]);
-
+  const [preserveCheckBox, setPreserveCheckBox] = useState<string[]>([]);
 
 
   useEffect(() => {
@@ -36,8 +36,8 @@ export default function DataListContainer(props: DataListContainerProps) {
         console.error("error: " + error);
       }
     }
-
     fetchData();
+    setPreserveCheckBox(logsToDisplay);
   }, [logsToDisplay]);
 
 
@@ -62,7 +62,7 @@ export default function DataListContainer(props: DataListContainerProps) {
         setShowModal(true);
       }}>Přidat záznam</button>
       {showModal &&
-        <ModalForm showModal={showModal} handleModalClose={() => setShowModal(false)} onDisplayChange={handleDisplayChange} />
+        <ModalForm showModal={showModal} handleModalClose={() => setShowModal(false)} onDisplayChange={handleDisplayChange} preserveCheckBox={preserveCheckBox} />
       }
 
       <ul style={{ listStyle: 'none' }}>

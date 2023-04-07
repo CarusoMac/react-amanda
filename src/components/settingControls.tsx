@@ -90,12 +90,12 @@ export default function SettingControls(props: SettingControlsProps) {
             </div>
           </div>
         </div>
-        <div className="set-control-card col-3">
+        <div className="set-control-card col-4">
 
           <Znacka markerLocation={props.markerLocation} setMarkerLocation={props.setMarkerLocation} />
 
         </div>
-        <div className="set-control-card col-4 d-flex align-items-center text-center">
+        <div className="set-control-card col-3 d-flex align-items-center text-center">
           <p>Uzivatelske okno, nastaveni, nebo seznam intersekci,..</p>
 
         </div>
