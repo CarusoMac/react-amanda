@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 
 //components
-import MapComponent from './components/mapAmanda';
+import MapComponent from './components/MapComponent';
 import SettingControls from './components/settingControls';
 import DataListContainer from './components/dataListContainer';
 import { LogInfoDTO } from './DTOs/logInfoDTO';

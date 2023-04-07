@@ -1,23 +1,21 @@
 import React, { useState, useEffect } from "react";
-import LogDbModal from "./logDbModal";
+import FileInfo from "./FileInfo";
 import FileUploadForm from "./uploadForm";
 import axios, { AxiosResponse } from 'axios';
 import { urlLogs } from '../../endpoints';
 import { ListDTO } from "../../DTOs/listDTO";
 
-type ModalProps = {
+type ModalFormProps = {
   showModal: boolean;
   handleModalClose: (showModal: boolean) => void;
   onDisplayChange: (_selectedLogs: string[]) => void;
 };
 
-export default function ModalForm(props: ModalProps) {
+export default function ModalForm(props: ModalFormProps) {
   const [filesDB, setFilesDB] = useState<ListDTO[]>([]);
   const [selectedLogs, setSelectedLogs] = useState<string[]>([]);
   const [isNewUpload, setIsNewUpload] = useState(true);
 
-
-  //import seznamu dostupnych souboru v databazi
   useEffect(() => {
     axios.get<ListDTO[]>(`${urlLogs}/import`)
       .then(response => {
@@ -28,22 +26,18 @@ export default function ModalForm(props: ModalProps) {
       });
   }, [isNewUpload]);
 
-
-  //tested - ok
   const handleIsNewUploadChange = (change: boolean) => {
     const tempBool = isNewUpload;
     setIsNewUpload(!tempBool);
     setFilesDB([]);
   };
 
-  //tested - ok
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     props.handleModalClose(false);
     props.onDisplayChange(selectedLogs);
   };
 
-  //tested - ok
   const handleCheckBoxChange = (event: React.FormEvent<HTMLInputElement>) => {
     const id = event.currentTarget.id;
     const isChecked = event.currentTarget.checked;
@@ -62,7 +56,6 @@ export default function ModalForm(props: ModalProps) {
       {props.showModal && (
         <div className="modal">
           <div className="modal-content">
-            {/* <Pagination currentPage={page} totalAmountOfPages={totalAmountOfPages} onChange={newPage => setPage(newPage)} radio={2} /> */}
             <form onSubmit={handleSubmit} className="justify-items-center">
               <h2>Vyberte zaznamy z DB</h2>
               <button type="submit" className="file-submit-btn">Zobrazit vybrane zaznamy</button>
@@ -80,7 +73,7 @@ export default function ModalForm(props: ModalProps) {
                 <tbody>
                   {filesDB.map((log, index) => (
                     <tr key={index} className="row">
-                      <LogDbModal
+                      <FileInfo
                         key={index}
                         csvFileId={log.csvFileId}
                         csvFileName={log.csvFileName}

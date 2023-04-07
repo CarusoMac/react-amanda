@@ -394,9 +394,9 @@ input[type=range]::-moz-range-thumb {
   background-color: transparent;
   outline: none;
   border: none;
+  color: rgb(199, 144, 42);
 }
 
 .log-p-title {
   font-size: 1.1rem;
-  color: rgb(199, 144, 42);
 }

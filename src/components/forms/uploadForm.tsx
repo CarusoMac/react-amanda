@@ -63,9 +63,6 @@ export default function FileUploadForm(props: FileUploadFormProps) {
     setSelectedFiles(updatedFiles);
   };
 
-
-
-
   const clearMessage = () => {
     setMessage('');
   };
@@ -75,12 +72,10 @@ export default function FileUploadForm(props: FileUploadFormProps) {
 
       <form>
         <label htmlFor="file" className="upload-button" onClick={() => clearMessage}>
-          Pridat nový zaznam .csv
+          Přidat vlastní záznam .csv
           <input type="file" id="file" name="file" accept="text/csv" value={fileInputValue} onChange={onFileChange} multiple style={{ display: 'none' }} />
         </label>
-        <button type="button" className='file-submit-btn' disabled={selectedFiles.length ? false : true} onClick={onFormSubmit}>Poslat do databaze</button>
-
-
+        <button type="button" className='file-submit-btn' disabled={selectedFiles.length ? false : true} onClick={onFormSubmit}>Poslat do databáze</button>
 
         {selectedFiles.length > 0 && (
           <div>
@@ -100,12 +95,7 @@ export default function FileUploadForm(props: FileUploadFormProps) {
 
         )}
         <br />
-        {/* {loading ? <img src="loading.gif" alt="Loading" /> : <p>{message}</p>} */}
-        {loading ? <p>...nahravam...</p> : <p>{message}</p>}
-
-
-
-
+        {loading ? <p>...nahrávám...</p> : <p>{message}</p>}
       </form>
 
     </div>

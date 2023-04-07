@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import LogInfo from './logInfo';
+import LogInfo from './TrackInformation';
 import { logDTO } from '../DTOs/log.model';
 import axios, { AxiosResponse } from 'axios';
 import { urlLogs } from '../endpoints';
-import ModalForm from './forms/modalForm';
+import ModalForm from './forms/ModalForm';
 import { LogInfoDTO } from '../DTOs/logInfoDTO';
 
 
@@ -20,19 +20,26 @@ export default function DataListContainer(props: DataListContainerProps) {
   const [listDb, setListDb] = useState<logDTO[]>([]);
   const [dataList, setDataList] = useState<LogInfoDTO[][]>([]);
 
-  // getting checked box , selected logs from DB
+
+
   useEffect(() => {
-    Promise.all(logsToDisplay.map(file => axios.get<LogInfoDTO[]>(`${urlLogs}/${file}`)))
-      .then(responses => {
+    async function fetchData() {
+      try {
+        const responses = await Promise.all(
+          logsToDisplay.map(file => axios.get<LogInfoDTO[]>(`${urlLogs}/${file}`))
+        );
         const dataList: LogInfoDTO[][] = responses.map(response => response.data);
         const tempDatalist = dataList;
         setDataList(tempDatalist);
         props.onDataListChange(tempDatalist);
-      })
-      .catch(error => {
+      } catch (error) {
         console.error("error: " + error);
-      });
+      }
+    }
+
+    fetchData();
   }, [logsToDisplay]);
+
 
 
   // x button on loginfo
@@ -45,10 +52,6 @@ export default function DataListContainer(props: DataListContainerProps) {
   //checkbox - display from db, callback
   function handleDisplayChange(newLogsToDisplay: string[]) {
     setLogsToDisplay(newLogsToDisplay)
-  }
-
-  function generateRandomKey() {
-    return Math.floor(Math.random() * 1000000);
   }
 
   return (

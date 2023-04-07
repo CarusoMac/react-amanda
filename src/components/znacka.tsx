@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import icon from 'leaflet/dist/images/marker-icon.png'
 
 interface ZnackaProps {
@@ -7,7 +7,10 @@ interface ZnackaProps {
 }
 
 export default function Znacka(props: ZnackaProps) {
+
+
   return (
+
     <div className='set-marker-container'>
       <div className='set-marker-header'>
         <h3>Značka</h3>

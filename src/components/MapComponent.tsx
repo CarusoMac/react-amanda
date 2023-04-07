@@ -9,7 +9,7 @@ import '../App.css';
 
 
 //components
-import DragZnacka from './dragZnacka';
+import DragZnacka from './Drag';
 import { marker } from 'leaflet';
 import { LogInfoDTO } from '../DTOs/logInfoDTO';
 

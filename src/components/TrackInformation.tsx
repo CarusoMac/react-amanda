@@ -4,7 +4,7 @@ import { distance, formatTimeStamp, findClosestTimestamp } from '../utils/utils'
 import { logDTO } from '../DTOs/log.model';
 import axios, { AxiosResponse } from 'axios';
 import { LogInfoDTO } from '../DTOs/logInfoDTO';
-import LogTitle from './LogTitile';
+import LogTitle from './TrackTitile';
 
 
 
@@ -53,6 +53,8 @@ export default function LogInfo(props: logDTO) {
     const { distance: minDistance, time: minDistanceTime } = distances.reduce((min, current) => current.distance < min.distance ? current : min);
     setMinDistance(minDistance);
     setMinDistanceTime(minDistanceTime);
+    console.log("min Distance" + minDistance);
+    console.log("location of marker" + props.markerLocation);
   }, [props.markerLocation]);
 
   //tested ok

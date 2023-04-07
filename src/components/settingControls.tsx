@@ -1,3 +1,6 @@
+
+
+
 import React from 'react'
 import { useState, useEffect, useRef } from 'react';
 
@@ -92,8 +95,8 @@ export default function SettingControls(props: SettingControlsProps) {
           <Znacka markerLocation={props.markerLocation} setMarkerLocation={props.setMarkerLocation} />
 
         </div>
-        <div className="set-control-card col-4">
-          {/* <FileUploadForm /> */}
+        <div className="set-control-card col-4 d-flex align-items-center text-center">
+          <p>Uzivatelske okno, nastaveni, nebo seznam intersekci,..</p>
 
         </div>
       </div>

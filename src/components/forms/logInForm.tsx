@@ -3,6 +3,8 @@ import React from 'react'
 import * as Yup from 'yup'
 import TextField from './textField';
 
+//zatim neimplementovano priprava na login
+
 interface FormValues {
   user: string;
   password: string;

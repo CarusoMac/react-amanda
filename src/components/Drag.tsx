@@ -41,4 +41,3 @@ export default function DragZnacka(props: DragZnackaProps) {
     </Marker>
   )
 }
-
