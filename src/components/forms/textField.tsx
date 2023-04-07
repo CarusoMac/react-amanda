@@ -1,6 +1,8 @@
 import React from 'react'
 import { Field, ErrorMessage } from 'formik'
 
+//zatim neimplementovano priprava na login
+
 interface textFieldProps {
   field: string;
   label: string;
