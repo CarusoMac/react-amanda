@@ -17,7 +17,6 @@ const InitValues: FormValues = {
 
 const onSubmit = async (values: FormValues) => {
   await new Promise(r => setTimeout(r, 3000));
-  console.log(values);
 };
 
 export default function LogInForm() {

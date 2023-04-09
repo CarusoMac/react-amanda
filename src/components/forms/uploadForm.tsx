@@ -27,6 +27,7 @@ export default function FileUploadForm(props: FileUploadFormProps) {
     }
   };
 
+
   async function onFormSubmit() {
 
     if (selectedFiles.length === 0) {
@@ -34,28 +35,31 @@ export default function FileUploadForm(props: FileUploadFormProps) {
       return;
     }
 
-    const formData = new FormData();
-    selectedFiles.forEach(file => formData.append('file', file));
-
     try {
-      const response = await axios.post(`${urlLogs}/upload`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
+      setLoading(true);
+      const formData = new FormData();
+      for (const file of selectedFiles) {
+        formData.append('file', file);
+        const response = await axios.post(`${urlLogs}/upload`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        console.log(response);
+      }
       setLoading(false);
-      console.log(response);
-      setMessage('Soubor byl úspěšně nahrán do DB');
+      setMessage('Soubory byly úspěšně nahrány do DB');
       setTimeout(clearMessage, 3000);
-      setSelectedFiles([]); //vybrane soubory z fs pripravene k nahrani do db - jsou nahrane -- nuluje se
+      setSelectedFiles([]);
       await props.isNewUpload(!isNewUpload);
       console.log("uploadform: nastaveni zmeny na is new upload");
     } catch (error) {
       setLoading(false);
-      setMessage(`Nahrání souboru selhalo`);
+      setMessage(`Nahrání souborů selhalo`);
       setTimeout(clearMessage, 3000);
     }
   };
+
 
   //mazani vybranych souboru z fs pred odeslanim do DB
   const removeFile = (fileName: string) => {
@@ -71,11 +75,15 @@ export default function FileUploadForm(props: FileUploadFormProps) {
     <div className='set-marker-container'>
 
       <form>
-        <label htmlFor="file" className="upload-button" onClick={() => clearMessage}>
-          Přidat vlastní záznam .csv
+        <label htmlFor="file" className="plus-button" onClick={() => clearMessage}>
+          Přidat nový
           <input type="file" id="file" name="file" accept="text/csv" value={fileInputValue} onChange={onFileChange} multiple style={{ display: 'none' }} />
         </label>
-        <button type="button" className='file-submit-btn' disabled={selectedFiles.length ? false : true} onClick={onFormSubmit}>Poslat do databáze</button>
+        {selectedFiles.length > 0 && (
+          <button type="button" className='file-submit-btn' onClick={onFormSubmit}>
+            Uložit
+          </button>
+        )}
 
         {selectedFiles.length > 0 && (
           <div>

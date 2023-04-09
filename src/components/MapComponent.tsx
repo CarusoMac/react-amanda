@@ -46,9 +46,6 @@ export default function MapComponent(props: MapComponentProps) {
     setMapCenter(newCenter);
   }, [props.dataList]);
 
-
-
-
   useEffect(() => {
     let tempPathInTimeCollection: [number, number][][] = [];
     let dataList = props.dataList;

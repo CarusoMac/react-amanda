@@ -47,9 +47,11 @@ export default function DataListContainer(props: DataListContainerProps) {
 
   return (
     <div className='col-3 datalist-container'>
-      <button className="plus-button" onClick={() => {
-        setShowModal(true);
-      }}>Přidat záznam</button>
+      <div className="d-flex justify-content-end style={{ marginLeft: '10px' }}">
+        <button className="plus-button" onClick={() => {
+          setShowModal(true);
+        }}>Vybrat záznam</button>
+      </div>
       {showModal &&
         <ModalForm showModal={showModal}
           handleModalClose={() => setShowModal(false)}
