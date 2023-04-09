@@ -43,7 +43,6 @@ export default function MapComponent(props: MapComponentProps) {
 
   useEffect(() => {
     const newCenter = mapcenter(props.dataList);
-    console.log("map center" + newCenter)
     setMapCenter(newCenter);
   }, [props.dataList]);
 

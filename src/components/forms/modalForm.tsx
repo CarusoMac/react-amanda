@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from "react";
 import FileInfo from "./FileInfo";
 import FileUploadForm from "./uploadForm";
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { urlLogs } from '../../endpoints';
 import { ListDTO } from "../../DTOs/listDTO";
 
-type ModalFormProps = {
+interface ModalFormProps {
   showModal: boolean;
   handleModalClose: (showModal: boolean) => void;
   onDisplayChange: (_selectedLogs: string[]) => void;
+  preserveCheckBox: string[];
 };
 
 export default function ModalForm(props: ModalFormProps) {
   const [filesDB, setFilesDB] = useState<ListDTO[]>([]);
-  const [selectedLogs, setSelectedLogs] = useState<string[]>([]);
+  const [selectedLogs, setSelectedLogs] = useState<string[]>(props.preserveCheckBox);
   const [isNewUpload, setIsNewUpload] = useState(true);
 
   useEffect(() => {
@@ -49,7 +50,6 @@ export default function ModalForm(props: ModalFormProps) {
     }
   };
 
-
   return (
     <>
       {/* pokud je showModal true zobrazi se mofal */}
@@ -57,7 +57,7 @@ export default function ModalForm(props: ModalFormProps) {
         <div className="modal">
           <div className="modal-content">
             <form onSubmit={handleSubmit} className="justify-items-center">
-              <h2>Vyberte zaznamy z DB</h2>
+              <h2>Vyberte záznamy z DB</h2>
               <button type="submit" className="file-submit-btn">Zobrazit vybrane zaznamy</button>
               <table className="container ListOfRecords">
                 <thead>
@@ -72,22 +72,24 @@ export default function ModalForm(props: ModalFormProps) {
 
                 <tbody>
                   {filesDB.map((log, index) => (
-                    <tr key={index} className="row">
-                      <FileInfo
-                        key={index}
-                        csvFileId={log.csvFileId}
-                        csvFileName={log.csvFileName}
-                        userId={log.userId}
-                        uploadDate={log.uploadDate}
-                        firstTimeStamp={log.firstTimeStamp}
-                        lastTimeStamp={log.lastTimeStamp}
-                        logId={index}
-                      />
-                      <td className='col-1'><input type='checkbox' id={log.csvFileId} onChange={handleCheckBoxChange} /></td>
-                    </tr>
+                    <>
+
+                      <tr key={index} className="row">
+                        <FileInfo
+                          key={index}
+                          csvFileId={log.csvFileId}
+                          csvFileName={log.csvFileName}
+                          userId={log.userId}
+                          uploadDate={log.uploadDate}
+                          firstTimeStamp={log.firstTimeStamp}
+                          lastTimeStamp={log.lastTimeStamp}
+                          logId={index}
+                        />
+                        <td className='col-1'><input type='checkbox' id={log.csvFileId} onChange={handleCheckBoxChange} checked={selectedLogs.includes(log.csvFileId)} /></td>
+                      </tr>
+                    </>
                   ))}
                 </tbody>
-
               </table>
 
 

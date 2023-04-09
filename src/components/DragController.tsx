@@ -1,12 +1,12 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent } from 'react'
 import icon from 'leaflet/dist/images/marker-icon.png'
 
-interface ZnackaProps {
+interface DragControllerProps {
   markerLocation: [number, number]
   setMarkerLocation: (newMarkerLocation: [number, number]) => void
 }
 
-export default function Znacka(props: ZnackaProps) {
+export default function DragController(props: DragControllerProps) {
 
   const handleMarkerLonChange = (event: ChangeEvent<HTMLInputElement>) => {
     props.setMarkerLocation([props.markerLocation[0], parseFloat(event.target.value)]);
@@ -16,9 +16,7 @@ export default function Znacka(props: ZnackaProps) {
     props.setMarkerLocation([parseFloat(event.target.value), props.markerLocation[1]]);
   }
 
-
   return (
-
     <div className='set-marker-container'>
       <div className='set-marker-header'>
         <h3>Značka</h3>

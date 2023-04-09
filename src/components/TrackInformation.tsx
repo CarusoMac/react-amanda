@@ -9,14 +9,12 @@ import LogTitle from './TrackTitile';
 
 
 export default function LogInfo(props: logDTO) {
-  const [isVisible, setIsVisible] = useState(false);
   const [currentLat, setCurrentLat] = useState(0);
   const [currentLon, setCurrentLon] = useState(0);
   const [currentCell, setCurrentCell] = useState('');
   const [distanceFromMarker, setDistanceFromMarker] = useState(0);
   const [minDistance, setMinDistance] = useState(0);
   const [minDistanceTime, setMinDistanceTime] = useState(0);
-  // const [logDisplayText, setLogDisplayText] = useState(props.logDisplayID);
 
 
   const data = props.data;
@@ -53,8 +51,6 @@ export default function LogInfo(props: logDTO) {
     const { distance: minDistance, time: minDistanceTime } = distances.reduce((min, current) => current.distance < min.distance ? current : min);
     setMinDistance(minDistance);
     setMinDistanceTime(minDistanceTime);
-    console.log("min Distance" + minDistance);
-    console.log("location of marker" + props.markerLocation);
   }, [props.markerLocation]);
 
   //tested ok
