@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import LogInfo from './TrackInformation';
-import { logDTO } from '../DTOs/log.model';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { urlLogs } from '../endpoints';
 import ModalForm from './forms/ModalForm';
 import { LogInfoDTO } from '../DTOs/logInfoDTO';
@@ -15,9 +14,7 @@ interface DataListContainerProps {
 
 export default function DataListContainer(props: DataListContainerProps) {
   const [logsToDisplay, setLogsToDisplay] = useState<string[]>([]);
-  const [LogDeleteId, setLogDeleteId] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const [listDb, setListDb] = useState<logDTO[]>([]);
   const [dataList, setDataList] = useState<LogInfoDTO[][]>([]);
   const [preserveCheckBox, setPreserveCheckBox] = useState<string[]>([]);
 
@@ -40,36 +37,35 @@ export default function DataListContainer(props: DataListContainerProps) {
     setPreserveCheckBox(logsToDisplay);
   }, [logsToDisplay]);
 
+  const handleLogHide = (newValue: string) => {
+    setLogsToDisplay(prevLogsToDisplay => prevLogsToDisplay.filter(item => item !== newValue));
+  };
 
-
-  // x button on loginfo
-  function handleLogHide(newValue: string) {
-    setLogDeleteId(newValue);
-    const tempLogsToDisplay = logsToDisplay.filter(item => item !== newValue); // remove the matching item from the array
-    setLogsToDisplay(tempLogsToDisplay);
-  }
-
-  //checkbox - display from db, callback
-  function handleDisplayChange(newLogsToDisplay: string[]) {
-    setLogsToDisplay(newLogsToDisplay)
-  }
+  const handleDisplayChange = (newLogsToDisplay: string[]) => {
+    setLogsToDisplay(newLogsToDisplay);
+  };
 
   return (
     <div className='col-3 datalist-container'>
-
       <button className="plus-button" onClick={() => {
-        // onAPIRequest();
         setShowModal(true);
       }}>Přidat záznam</button>
       {showModal &&
-        <ModalForm showModal={showModal} handleModalClose={() => setShowModal(false)} onDisplayChange={handleDisplayChange} preserveCheckBox={preserveCheckBox} />
+        <ModalForm showModal={showModal}
+          handleModalClose={() => setShowModal(false)}
+          onDisplayChange={handleDisplayChange}
+          preserveCheckBox={preserveCheckBox} />
       }
 
       <ul style={{ listStyle: 'none' }}>
-
         {dataList.map((zaznam) =>
           <li key={zaznam[0].csvFileId}>
-            <LogInfo data={zaznam} logDisplayID={zaznam[0].csvFileId} onLogHide={handleLogHide} currentTime={props.currentTime} markerLocation={props.markerLocation} />
+            <LogInfo
+              data={zaznam}
+              logDisplayID={zaznam[0].csvFileId}
+              onLogHide={handleLogHide}
+              currentTime={props.currentTime}
+              markerLocation={props.markerLocation} />
           </li>)
         }
       </ul>
