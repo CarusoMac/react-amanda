@@ -25,8 +25,7 @@ export default function DataListContainer(props: DataListContainerProps) {
         const responses = await Promise.all(
           logsToDisplay.map(file => axios.get<LogInfoDTO[]>(`${urlLogs}/${file}`))
         );
-        const dataList: LogInfoDTO[][] = responses.map(response => response.data);
-        const tempDatalist = dataList;
+        const tempDatalist = responses.map(response => response.data);
         setDataList(tempDatalist);
         props.onDataListChange(tempDatalist);
       } catch (error) {

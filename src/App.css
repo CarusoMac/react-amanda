@@ -141,7 +141,7 @@ button {
 }
 
 .log-info-card .header {
-  padding: 15px;
+  padding-bottom: 10px;
 }
 
 .log-info-card p {
@@ -159,12 +159,11 @@ button {
 
 
 .log-info-card button {
-  color: gray;
+  color: red;
   border: none;
   font-size: 1.2rem;
   background-color: transparent;
-  padding: 0;
-  margin: 0;
+
 }
 
 .log-info-controls {

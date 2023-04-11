@@ -27,4 +27,6 @@ export interface LogInfoDTO {
   sid: string
   nid: string
   bid: string
+  btsLat: number
+  btsLon: number
 }

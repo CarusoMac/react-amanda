@@ -6,6 +6,7 @@ import DragController from './DragController';
 
 //utils
 import { formatTimeStamp } from '../utils/utils';
+import TimeComponent from './TimeComponent';
 
 interface SettingControlsProps {
   onRangeSet: (newTime: number) => void;
@@ -57,7 +58,7 @@ export default function SettingControls(props: SettingControlsProps) {
       }
     }, 1000);
     return () => {
-      clearTimeout(intervalId);
+      clearInterval(intervalId);
     };
   }, [props.currentTime, isPlaying]);
 
@@ -88,7 +89,7 @@ export default function SettingControls(props: SettingControlsProps) {
             </div>
 
             <div>
-              {formatTimeStamp(props.currentTime)}
+              {props.currentTime !== Infinity ? formatTimeStamp(props.currentTime) : <TimeComponent />}
             </div>
           </div>
         </div>

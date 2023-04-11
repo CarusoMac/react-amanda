@@ -18,7 +18,7 @@ export default function ModalForm(props: ModalFormProps) {
   const [isNewUpload, setIsNewUpload] = useState(true);
 
   useEffect(() => {
-    axios.get<ListDTO[]>(`${urlLogs}/import`)
+    axios.get<ListDTO[]>(`${urlLogs}/export`)
       .then(response => {
         setFilesDB(response.data);
       })
@@ -33,8 +33,7 @@ export default function ModalForm(props: ModalFormProps) {
     setFilesDB([]);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = () => {
     props.handleModalClose(false);
     props.onDisplayChange(selectedLogs);
   };
@@ -43,7 +42,6 @@ export default function ModalForm(props: ModalFormProps) {
     const id = event.currentTarget.id;
     const isChecked = event.currentTarget.checked;
     if (isChecked) {
-      const tempSelectedLogs = selectedLogs
       setSelectedLogs([...selectedLogs, id]);
     } else {
       setSelectedLogs(selectedLogs.filter((logId) => logId !== id));
@@ -56,9 +54,7 @@ export default function ModalForm(props: ModalFormProps) {
         <div className="modal">
           <div className="modal-content">
             <h2 className="mb-3">Dostupné záznamy</h2>
-
-            <form onSubmit={handleSubmit} className="justify-items-center">
-              <button type="submit" className="file-submit-btn">Zobrazit vybrané</button>
+            <form className="justify-items-center">
               <div className="table-container">
                 <table className="container ListOfRecords">
                   <thead style={{ position: 'sticky', top: '0', backgroundColor: "white" }}>
@@ -72,34 +68,34 @@ export default function ModalForm(props: ModalFormProps) {
                   </thead>
                   <tbody>
                     {filesDB.map((log, index) => (
-                      <>
-                        <tr key={index} className="row">
-                          <FileInfo
-                            key={index}
-                            csvFileId={log.csvFileId}
-                            csvFileName={log.csvFileName}
-                            userId={log.userId}
-                            uploadDate={log.uploadDate}
-                            firstTimeStamp={log.firstTimeStamp}
-                            lastTimeStamp={log.lastTimeStamp}
-                            logId={index}
-                          />
-                          <td className='col-1'><input type='checkbox' id={log.csvFileId} onChange={handleCheckBoxChange} checked={selectedLogs.includes(log.csvFileId)} /></td>
-                        </tr>
-                      </>
+
+                      <tr key={index} className="row">
+                        <FileInfo
+                          key={index}
+                          csvFileId={log.csvFileId}
+                          csvFileName={log.csvFileName}
+                          userId={log.userId}
+                          uploadDate={log.uploadDate}
+                          firstTimeStamp={log.firstTimeStamp}
+                          lastTimeStamp={log.lastTimeStamp}
+                          logId={index}
+                        />
+                        <td className='col-1'><input type='checkbox' id={log.csvFileId} onChange={handleCheckBoxChange} checked={selectedLogs.includes(log.csvFileId)} /></td>
+                      </tr>
+
                     ))}
                   </tbody>
                 </table>
               </div>
-
-              <FileUploadForm isNewUpload={handleIsNewUploadChange} />
-
-
             </form>
-
+            <FileUploadForm isNewUpload={handleIsNewUploadChange} />
+            <button type="button"
+              className="file-submit-btn"
+              onClick={handleSubmit}
+              style={{ marginTop: 30 }}>Zobrazit vybrané</button>
 
             <button
-              className="close-button"
+              className="close-button m-3"
               onClick={() => props.handleModalClose(false)}
             >
               X

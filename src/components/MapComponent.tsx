@@ -1,23 +1,19 @@
 //dependecies
-import { MapContainer, TileLayer, Marker, Popup, Polyline, LayerGroup, FeatureGroup, Rectangle, Circle } from 'react-leaflet'
-import { useRef, useEffect, useState } from 'react';
-
-//styles
-import 'bootstrap/dist/css/bootstrap.css';
-import '../App.css';
-//data
-
-
+import { MapContainer, TileLayer, Polyline, LayerGroup, Marker, Popup } from 'react-leaflet'
+import { Icon } from 'leaflet';
+import { useEffect, useState } from 'react';
 //components
 import DragZnacka from './Drag';
-import { marker } from 'leaflet';
 import { LogInfoDTO } from '../DTOs/logInfoDTO';
+import { BtsTowerModel } from '../DTOs/btsTowerModel';
+
 
 interface MapComponentProps {
   currentTime: number;
   onMarkerChange: (position: [number, number]) => void;
   dataList: LogInfoDTO[][];
   markerLocation: [number, number];
+  btsTowers: BtsTowerModel[];
 }
 
 //vypocteni mapoveho centra
@@ -34,9 +30,12 @@ const mapcenter = (logs: LogInfoDTO[][]) => {
   );
 };
 
-export default function MapComponent(props: MapComponentProps) {
+const btsIcon = new Icon({
+  iconUrl: process.env.PUBLIC_URL + '/icons/signal-tower-icon.png',
+  iconSize: [32, 32],
+});
 
-  // const [currentLocation, setCurrentLocation] = useState([log1[log1.length - 1].lat, log1[log1.length - 1].lon]);
+export default function MapComponent(props: MapComponentProps) {
   const [pathInTimeCollection, setPathInTimeCollection] = useState<[number, number][][]>([]);
   const [mapCenter, setMapCenter] = useState<[number, number]>([0, 0]);
 
@@ -51,7 +50,6 @@ export default function MapComponent(props: MapComponentProps) {
     let dataList = props.dataList;
     dataList.forEach(data => {
       let tempPathInTime: [number, number][] = [];
-
       data.forEach(location => {
         if ((location.measured_at) <= props.currentTime) {
           tempPathInTime.push([location.lat, location.lon]);
@@ -59,31 +57,31 @@ export default function MapComponent(props: MapComponentProps) {
       });
       tempPathInTimeCollection.push(tempPathInTime);
       setPathInTimeCollection(tempPathInTimeCollection);
-
     })
   }, [props.currentTime]);
-
 
   return (
     <>
       <div className='col-9'>
-        {/* <MapContainer center={mapcenter()} zoom={15} scrollWheelZoom={true} > */}
         <MapContainer key={mapCenter.toString()} center={mapCenter} zoom={15} scrollWheelZoom={true} >
-
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           <DragZnacka positions={props.markerLocation[0] !== 0 ? props.markerLocation : mapCenter} handleDrag={props.onMarkerChange} />
-
           <LayerGroup>
             {pathInTimeCollection.map((path, index) => (
               <Polyline key={index} positions={path} color="red" />
             ))}
           </LayerGroup>
-
-
-
+          {props.btsTowers.map((tower, index) => (
+            <Marker key={index} position={[tower.lat, tower.lon]} icon={btsIcon}>
+              <Popup>{
+                tower.cellid +
+                "lat: " + tower.lat +
+                "lon: " + tower.lon}</Popup>
+            </Marker>
+          ))}
         </MapContainer>
       </div>
     </>

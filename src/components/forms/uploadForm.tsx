@@ -45,14 +45,12 @@ export default function FileUploadForm(props: FileUploadFormProps) {
             'Content-Type': 'multipart/form-data'
           }
         });
-        console.log(response);
       }
       setLoading(false);
       setMessage('Soubory byly úspěšně nahrány do DB');
       setTimeout(clearMessage, 3000);
       setSelectedFiles([]);
       await props.isNewUpload(!isNewUpload);
-      console.log("uploadform: nastaveni zmeny na is new upload");
     } catch (error) {
       setLoading(false);
       setMessage(`Nahrání souborů selhalo`);
@@ -75,13 +73,15 @@ export default function FileUploadForm(props: FileUploadFormProps) {
     <div className='set-marker-container'>
 
       <form>
-        <label htmlFor="file" className="plus-button" onClick={() => clearMessage}>
-          Přidat nový
-          <input type="file" id="file" name="file" accept="text/csv" value={fileInputValue} onChange={onFileChange} multiple style={{ display: 'none' }} />
-        </label>
+        {selectedFiles.length === 0 && (
+          <label htmlFor="file" className="plus-button" onClick={() => clearMessage}>
+            Přidat nový
+            <input type="file" id="file" name="file" accept="text/csv" value={fileInputValue} onChange={onFileChange} multiple style={{ display: 'none' }} />
+          </label>
+        )}
         {selectedFiles.length > 0 && (
           <button type="button" className='file-submit-btn' onClick={onFormSubmit}>
-            Uložit
+            Přidat
           </button>
         )}
 

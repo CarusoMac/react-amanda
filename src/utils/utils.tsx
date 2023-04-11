@@ -21,13 +21,13 @@ export const formatTimeStamp = (timestamp: number) => {
   let date = new Date(timestamp);
   let options: Intl.DateTimeFormatOptions = {
     year: 'numeric',
-    month: 'long',
+    month: 'numeric',
     day: 'numeric',
     hour: 'numeric',
     minute: 'numeric',
     second: 'numeric'
   };
-  return (date.toLocaleDateString('cs-CZ', options));
+  return (date.toLocaleString('cs-CZ', options));
 }
 
 export const findClosestTimestamp = (timestamps: number[], currentTime: number): number => {

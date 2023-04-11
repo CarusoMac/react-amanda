@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-
+import React from 'react'
+import { formatTimeStamp } from '../../utils/utils';
 
 interface FileInfoProps {
   logId: number;
@@ -9,18 +9,15 @@ interface FileInfoProps {
   uploadDate: string;
   firstTimeStamp: number;
   lastTimeStamp: number;
-
 }
 
 export default function FileInfo(props: FileInfoProps) {
-
   return (
-
     <>
       <td className='col-2'>{props.csvFileName}</td>
       <td className='col-3'>{props.uploadDate}</td>
-      <td className='col-3'>{props.firstTimeStamp}</td>
-      <td className='col-3'>{props.lastTimeStamp}</td>
+      <td className='col-3'>{formatTimeStamp(props.firstTimeStamp)}</td>
+      <td className='col-3'>{formatTimeStamp(props.lastTimeStamp)}</td>
     </>
 
   )

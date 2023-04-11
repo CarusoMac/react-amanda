@@ -1,5 +1,5 @@
-import React, { useRef, useCallback, useMemo, useState, useEffect } from 'react'
-import { Marker, Popup } from 'react-leaflet'
+import React, { useRef, useMemo, useState, useEffect } from 'react'
+import { Marker } from 'react-leaflet'
 import L, { LatLng } from 'leaflet';
 
 
@@ -9,7 +9,6 @@ interface DragZnackaProps {
 }
 
 export default function DragZnacka(props: DragZnackaProps) {
-
   const [position, setPosition] = useState<[number, number]>([props.positions[0], props.positions[1]]);
   const markerRef = useRef<L.Marker<any>>(null)
   const eventHandlers = useMemo(
@@ -23,7 +22,7 @@ export default function DragZnacka(props: DragZnackaProps) {
         }
       },
     }),
-    [],
+    [props],
   )
 
   useEffect(() => {

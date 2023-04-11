@@ -17,7 +17,7 @@ export default function LogTitle(props: LogTitleProps) {
 
   useEffect(() => {
     const id = props.csvFileId;
-    axios.get<ListDTO>(`${urlLogs}/import/${id}`)
+    axios.get<ListDTO>(`${urlLogs}/export/${id}`)
       .then(response => {
         setFile(response.data);
       })
@@ -39,7 +39,6 @@ export default function LogTitle(props: LogTitleProps) {
     const id = props.csvFileId;
     axios.put(`${urlLogs}/update/${id}`, { fileTitle: title })
       .then(response => {
-        console.log(response.data);
         setOnUpdate(!onUpdate);
       })
       .catch(error => {
