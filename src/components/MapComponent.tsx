@@ -14,6 +14,7 @@ interface MapComponentProps {
   dataList: LogInfoDTO[][];
   markerLocation: [number, number];
   btsTowers: BtsTowerModel[];
+  currentCell: string;
 }
 
 //vypocteni mapoveho centra
@@ -32,6 +33,11 @@ const mapcenter = (logs: LogInfoDTO[][]) => {
 
 const btsIcon = new Icon({
   iconUrl: process.env.PUBLIC_URL + '/icons/signal-tower-icon.png',
+  iconSize: [32, 32],
+});
+
+const btsActiveIcon = new Icon({
+  iconUrl: process.env.PUBLIC_URL + '/icons/active-tower-icon.png',
   iconSize: [32, 32],
 });
 
@@ -75,7 +81,7 @@ export default function MapComponent(props: MapComponentProps) {
             ))}
           </LayerGroup>
           {props.btsTowers.map((tower, index) => (
-            <Marker key={index} position={[tower.lat, tower.lon]} icon={btsIcon}>
+            <Marker key={index} position={[tower.lat, tower.lon]} icon={tower.cellid !== props.currentCell ? btsIcon : btsActiveIcon}>
               <Popup>{
                 tower.cellid +
                 "lat: " + tower.lat +
