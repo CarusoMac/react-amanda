@@ -1,6 +1,7 @@
 import React from 'react'
 import { formatTimeStamp } from '../../utils/utils';
 
+//basic table for modal form - files to choose form database
 interface FileInfoProps {
   logId: number;
   csvFileId: string;

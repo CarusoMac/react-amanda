@@ -1,19 +1,18 @@
 import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { urlLogs } from '../../endpoints';
-import { logDTO } from '../../DTOs/log.model';
+// import { logDTO } from '../../DTOs/log.model';
 
 interface FileUploadFormProps {
   isNewUpload: (isNewUpload: boolean) => void;
 }
 
 export default function FileUploadForm(props: FileUploadFormProps) {
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-  const [message, setMessage] = useState<string>('');
-  const [loading, setLoading] = useState(false);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]); //selected files from fs
+  const [message, setMessage] = useState<string>(''); //error msg
+  const [loading, setLoading] = useState(false); //loading state
   const [fileInputValue, setFileInputTypeValue] = useState("");
   const [isNewUpload, setIsNewUpload] = useState(true);
-
 
   useEffect(() => {
     setFileInputTypeValue("")
@@ -26,37 +25,6 @@ export default function FileUploadForm(props: FileUploadFormProps) {
       setSelectedFiles([...selectedFiles, ...newSelectedFiles]);
     }
   };
-
-
-  // async function onFormSubmit() {
-
-  //   if (selectedFiles.length === 0) {
-  //     setMessage('Vyberte nejméně jeden soubor');
-  //     return;
-  //   }
-
-  //   try {
-  //     setLoading(true);
-  //     const formData = new FormData();
-  //     for (const file of selectedFiles) {
-  //       formData.append('file', file);
-  //       const response = await axios.post(`${urlLogs}/upload`, formData, {
-  //         headers: {
-  //           'Content-Type': 'multipart/form-data'
-  //         }
-  //       });
-  //     }
-  //     setLoading(false);
-  //     setMessage('Soubory byly úspěšně nahrány do DB');
-  //     setTimeout(clearMessage, 3000);
-  //     setSelectedFiles([]);
-  //     await props.isNewUpload(!isNewUpload);
-  //   } catch (error) {
-  //     setLoading(false);
-  //     setMessage(`Nahrání souborů selhalo`);
-  //     setTimeout(clearMessage, 3000);
-  //   }
-  // };
 
   async function onFormSubmit() {
     if (selectedFiles.length === 0) {
@@ -80,7 +48,7 @@ export default function FileUploadForm(props: FileUploadFormProps) {
       setLoading(false);
       setMessage('Soubory byly úspěšně nahrány do DB');
       setTimeout(clearMessage, 3000);
-      setSelectedFiles([]);
+      setSelectedFiles([]);             //clear selected files arr
       await props.isNewUpload(!isNewUpload);
     } catch (error) {
       setLoading(false);
@@ -89,7 +57,7 @@ export default function FileUploadForm(props: FileUploadFormProps) {
     }
   };
 
-  //mazani vybranych souboru z fs pred odeslanim do DB
+  //deleting selected files from fs before sending to DB - remove btn
   const removeFile = (fileName: string) => {
     const updatedFiles = selectedFiles.filter(file => file.name !== fileName);
     setSelectedFiles(updatedFiles);

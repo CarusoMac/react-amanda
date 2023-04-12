@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { distance, formatTimeStamp, findClosestTimestamp } from '../utils/utils';
 import { logDTO } from '../DTOs/log.model';
-import axios, { AxiosResponse } from 'axios';
-import { LogInfoDTO } from '../DTOs/logInfoDTO';
+// import axios, { AxiosResponse } from 'axios';
+// import { LogInfoDTO } from '../DTOs/logInfoDTO';
 import LogTitle from './TrackTitile';
 
 export default function LogInfo(props: logDTO) {
@@ -22,6 +22,7 @@ export default function LogInfo(props: logDTO) {
     let closestLocation = null;
     if (startRecord <= props.currentTime && endRecord >= props.currentTime) {
       setIsTrackActive(true);
+
     } else { setIsTrackActive(false) }
     for (let i = 0; i < data.length; i++) {
       const location = data[i];
@@ -35,8 +36,9 @@ export default function LogInfo(props: logDTO) {
       setCurrentCell(closestLocation.cellid);
       setCurrentLat(closestLocation.lat);
       setCurrentLon(closestLocation.lon);
+      if (isTrackActive) { props.onCellChange(closestLocation.cellid) };
     }
-    if (isTrackActive) { props.onCellChange(currentCell) };
+
   }, [props.currentTime, data]);
 
   //update current distance from marker on current location change

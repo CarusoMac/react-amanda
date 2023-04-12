@@ -13,10 +13,12 @@ interface ModalFormProps {
 };
 
 export default function ModalForm(props: ModalFormProps) {
-  const [filesDB, setFilesDB] = useState<ListDTO[]>([]);
-  const [selectedLogs, setSelectedLogs] = useState<string[]>(props.preserveCheckBox);
-  const [isNewUpload, setIsNewUpload] = useState(true);
+  const [filesDB, setFilesDB] = useState<ListDTO[]>([]);        //response from axios, array of DTOs files
+  const [selectedLogs, setSelectedLogs] = useState<string[]>(props.preserveCheckBox); //based on chekced checkboxes
+  const [isNewUpload, setIsNewUpload] = useState(true); //created for useeffect hook - to render new table after upload
 
+
+  //get data from DB
   useEffect(() => {
     axios.get<ListDTO[]>(`${urlLogs}/export`)
       .then(response => {
@@ -27,16 +29,19 @@ export default function ModalForm(props: ModalFormProps) {
       });
   }, [isNewUpload]);
 
+  //if there is new upload, change dbFiles arr, info from uploadform
   const handleIsNewUploadChange = (change: boolean) => {
     const tempBool = isNewUpload;
     setIsNewUpload(!tempBool);
     setFilesDB([]);
   };
 
+  //submitting modal - show selected logs
   const handleSubmit = () => {
     props.handleModalClose(false);
     props.onDisplayChange(selectedLogs);
   };
+
 
   const handleCheckBoxChange = (event: React.FormEvent<HTMLInputElement>) => {
     const id = event.currentTarget.id;
