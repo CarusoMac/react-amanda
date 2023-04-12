@@ -43,7 +43,6 @@ function App() {
   const handleCellChange = (currentCell: string) => {
     setCurrentCell(currentCell);
   }
-  console.log(currentCell);
 
   return (
     <>
