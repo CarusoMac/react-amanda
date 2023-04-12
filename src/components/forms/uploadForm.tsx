@@ -28,8 +28,37 @@ export default function FileUploadForm(props: FileUploadFormProps) {
   };
 
 
-  async function onFormSubmit() {
+  // async function onFormSubmit() {
 
+  //   if (selectedFiles.length === 0) {
+  //     setMessage('Vyberte nejméně jeden soubor');
+  //     return;
+  //   }
+
+  //   try {
+  //     setLoading(true);
+  //     const formData = new FormData();
+  //     for (const file of selectedFiles) {
+  //       formData.append('file', file);
+  //       const response = await axios.post(`${urlLogs}/upload`, formData, {
+  //         headers: {
+  //           'Content-Type': 'multipart/form-data'
+  //         }
+  //       });
+  //     }
+  //     setLoading(false);
+  //     setMessage('Soubory byly úspěšně nahrány do DB');
+  //     setTimeout(clearMessage, 3000);
+  //     setSelectedFiles([]);
+  //     await props.isNewUpload(!isNewUpload);
+  //   } catch (error) {
+  //     setLoading(false);
+  //     setMessage(`Nahrání souborů selhalo`);
+  //     setTimeout(clearMessage, 3000);
+  //   }
+  // };
+
+  async function onFormSubmit() {
     if (selectedFiles.length === 0) {
       setMessage('Vyberte nejméně jeden soubor');
       return;
@@ -37,8 +66,9 @@ export default function FileUploadForm(props: FileUploadFormProps) {
 
     try {
       setLoading(true);
-      const formData = new FormData();
+
       for (const file of selectedFiles) {
+        const formData = new FormData();
         formData.append('file', file);
         const response = await axios.post(`${urlLogs}/upload`, formData, {
           headers: {
@@ -46,6 +76,7 @@ export default function FileUploadForm(props: FileUploadFormProps) {
           }
         });
       }
+
       setLoading(false);
       setMessage('Soubory byly úspěšně nahrány do DB');
       setTimeout(clearMessage, 3000);
@@ -57,7 +88,6 @@ export default function FileUploadForm(props: FileUploadFormProps) {
       setTimeout(clearMessage, 3000);
     }
   };
-
 
   //mazani vybranych souboru z fs pred odeslanim do DB
   const removeFile = (fileName: string) => {

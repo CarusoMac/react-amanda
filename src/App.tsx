@@ -17,6 +17,7 @@ function App() {
   const [dataList, setDataList] = useState<LogInfoDTO[][]>([]);
   const [timeStampRange, setTimeStampRange] = useState<[number, number]>([0, 1]);
   const [btsTowers, setBtsTowers] = useState<BtsTowerModel[]>([]);
+  const [currentCell, setCurrentCell] = useState("");
 
   useEffect(() => {
     let timeStamps: number[] = [];
@@ -39,6 +40,10 @@ function App() {
   const handleNewDataList = (newDataList: LogInfoDTO[][]) => {
     setDataList(newDataList)
   }
+  const handleCellChange = (currentCell: string) => {
+    setCurrentCell(currentCell);
+  }
+  console.log(currentCell);
 
   return (
     <>
@@ -58,11 +63,14 @@ function App() {
             dataList={dataList}
             markerLocation={markerLocation}
             btsTowers={btsTowers}
+            currentCell={currentCell}
           />
           <DataListContainer
             currentTime={currentTime}
             markerLocation={markerLocation}
-            onDataListChange={handleNewDataList} />
+            onDataListChange={handleNewDataList}
+            onCellChange={handleCellChange}
+          />
         </div>
       </div>
     </>

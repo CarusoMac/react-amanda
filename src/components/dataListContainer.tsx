@@ -10,6 +10,7 @@ interface DataListContainerProps {
   currentTime: number;
   markerLocation: [number, number];
   onDataListChange: (newDataList: LogInfoDTO[][]) => void
+  onCellChange: (currentCell: string) => void;
 }
 
 export default function DataListContainer(props: DataListContainerProps) {
@@ -17,7 +18,7 @@ export default function DataListContainer(props: DataListContainerProps) {
   const [showModal, setShowModal] = useState(false);
   const [dataList, setDataList] = useState<LogInfoDTO[][]>([]);
   const [preserveCheckBox, setPreserveCheckBox] = useState<string[]>([]);
-
+  const [currentCell, setCurrentCell] = useState("");
 
   useEffect(() => {
     async function fetchData() {
@@ -44,6 +45,12 @@ export default function DataListContainer(props: DataListContainerProps) {
     setLogsToDisplay(newLogsToDisplay);
   };
 
+  const handleCellChange = (currentCell: string) => {
+    setCurrentCell(currentCell);
+    props.onCellChange(currentCell);
+  }
+
+
   return (
     <div className='col-3 datalist-container'>
       <div className="d-flex justify-content-end style={{ marginLeft: '10px' }}">
@@ -66,7 +73,9 @@ export default function DataListContainer(props: DataListContainerProps) {
               logDisplayID={zaznam[0].csvFileId}
               onLogHide={handleLogHide}
               currentTime={props.currentTime}
-              markerLocation={props.markerLocation} />
+              markerLocation={props.markerLocation}
+              onCellChange={handleCellChange}
+            />
           </li>)
         }
       </ul>

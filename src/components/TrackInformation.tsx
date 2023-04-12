@@ -35,8 +35,8 @@ export default function LogInfo(props: logDTO) {
       setCurrentCell(closestLocation.cellid);
       setCurrentLat(closestLocation.lat);
       setCurrentLon(closestLocation.lon);
-
     }
+    if (isTrackActive) { props.onCellChange(currentCell) };
   }, [props.currentTime, data]);
 
   //update current distance from marker on current location change
