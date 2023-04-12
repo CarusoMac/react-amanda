@@ -9,7 +9,7 @@ import { formatTimeStamp } from '../utils/utils';
 import TimeComponent from './TimeComponent';
 
 interface SettingControlsProps {
-  onRangeSet: (newTime: number) => void;
+  onRangeSet: (newTime: number) => void;//rangebar, seting current time on range
   currentTime: number;
   timeStampRange: [number, number];
   markerLocation: [number, number];
@@ -22,7 +22,7 @@ export default function SettingControls(props: SettingControlsProps) {
     props.onRangeSet(newTime);
   };
 
-  //controlls buttons**********************************************
+  //controlls buttons
   const [isPlaying, setIsPlaying] = useState(false);
 
   const handleButtonClick = (type: string, e: React.MouseEvent<HTMLButtonElement>) => {
