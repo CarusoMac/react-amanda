@@ -9,7 +9,6 @@ interface LogTitleProps {
 
 export default function LogTitle(props: LogTitleProps) {
   const [title, setTitle] = useState('');
-  // const [isFocused, setIsFocused] = useState(false);
   const titleRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<ListDTO | null>(null);
   const [onUpdate, setOnUpdate] = useState(true)
